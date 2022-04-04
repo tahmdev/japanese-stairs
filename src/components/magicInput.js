@@ -1,16 +1,18 @@
-const MagicInput = ({ text, position, handleChange, inputClass, outputClass}) => {
+const MagicInput = ({ text, position, setCurrentInput, inputClass, outputClass}) => {
 
   return(
     <>
       <textarea 
       type="text" 
-      id="input"
+      id="magic-input"
       className={`magic-input ${inputClass}`}
       style={position}
-      onChange={e => handleChange(e.target.value)}
+      onChange={e => setCurrentInput(e.target.value)}
+      value={text}
       autoFocus
       />
       <div 
+      id ="magic-output"
       className={`magic-output ${outputClass}`}
       style={position}
       >
