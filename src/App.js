@@ -1,28 +1,61 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import './App.css';
 import MagicInput from './components/magicInput';
+import useWebSocket, { ReadyState } from 'react-use-websocket';
+
 
 // SETTINGS, WEBSOCKET, PVP
+// Next steps: 
+
+// ADD LOCAL DICTIONARY TO REDUCE DELAY ON CONFIRMING WORDS EXISTENCE 
+// Make game reset every 24 hours 
+// Multiplayer 
+//  1v1 + 2v2, 
+//  Time based + lead based
+
+// All of the above with shiritori
+
+let apiUrl = "http://localhost:9000/stairs/"
 
 function App() {
-  const [stairs, setStairs] = useState(["育児","児童文学","学園","園庭", "庭中", "中学校", "校門", "門粒" ])
+  const [stairs, setStairs] = useState(["ロード中"])
+  const [socketUrl, setSocketurl] = useState("ws://localhost:7000/")
 
+  const {
+    sendMessage,
+    lastMessage,
+    readyState,
+  } = useWebSocket(socketUrl);
+  
+  useEffect(() => {
+    if (lastMessage) setStairs(prev => [...prev, lastMessage.data]);
+  }, [lastMessage]);
+
+  // get initial stairs
+  useEffect(() => {
+    fetch(apiUrl + "dailyKanji")
+    .then(res => res.json())
+    .then(json => setStairs([...json]))
+  }, [])
   return (
     <div className="App">
-      <StairDisplay stairs={stairs} setStairs={setStairs}/>
+      <StairDisplay stairs={stairs} setStairs={setStairs} sendMessage={sendMessage}/>
     </div>
   );
 }
 
 export default App;
 
-let apiUrl = "http://localhost:9000/stairs/"
 
-const StairDisplay = ({stairs, setStairs}) => {
+
+
+
+const StairDisplay = ({stairs, setStairs, sendMessage}) => {
   const [length, setLength] = useState([])
   const [height, setHeight] = useState([])
   const [currentInput, setCurrentInput] = useState("")
 
+  // Determine position of next word 
   useEffect(() => {
     let newLength = [0]
     let newHeight = [0]
@@ -41,19 +74,38 @@ const StairDisplay = ({stairs, setStairs}) => {
 
   const handleEnter = (e) => {
     if (e.key === "Enter") {
-      if (stairs.at(-1).at(-1)  === currentInput.replace(/\s/g, "").at(0) && !stairs.includes(currentInput.replace(/\s/g, ""))){ // Check if word AND Has no hiragana 
-        setStairs(prevStairs => [...prevStairs, currentInput.replace(/\s/g, "")])
-        setCurrentInput("")
-      }else{
-        console.log("nope")
-      }
+      
+      let cleanInput = currentInput.replace(/\s/g, "")
+
+      fetch(apiUrl + "jisho/" + cleanInput)
+      .then(res => res.json())
+      .then(json => {
+        if (json.length > 0){
+          if (stairs.at(-1).at(-1)  === cleanInput.at(0) // if new starts with last char of old
+          && !stairs.includes(cleanInput)                // is not a repeat
+          && cleanInput.length >= 2                      // At least 2 characters long
+          && cleanInput.length <= 4){                    // not longer than 4 characters
+            sendMessage(cleanInput)
+            console.log("YEP")
+            console.log()
+          }else{
+            console.log("nope")
+          }
+        }else{
+          console.log("not a real word")
+        }
+      })
+      // Verify input locally 
+      
       setCurrentInput("")
     }
   }
 
   useEffect(() => {
-    console.log(currentInput)
+    
+    // keep input on screen
     document.getElementById("magic-output").scrollIntoView({behavior: "smooth", block: "end", inline: "nearest"})
+    
     document.addEventListener("keydown", handleEnter)
     return () => {
       document.removeEventListener("keydown", handleEnter)
@@ -62,14 +114,19 @@ const StairDisplay = ({stairs, setStairs}) => {
 
   const apiTest = () => {
     console.log("testing")
-    fetch(apiUrl + "kanji/頭痛/stairsdaily/userName", {method: "POST"})
+    fetch(apiUrl + `kanji/${currentInput.replace(/\s/g, "")}/stairsdaily/userName`, {method: "POST"})
     .then(res => res.json())
     .then(json => console.log(json))
   }
-
+  const test =() => {
+    let re = new RegExp(/^[\u4e00-\u9faf\u3400-\u4dbf]+$/, "g")
+    let owo = "供物"
+    console.log(re.test(owo))
+  }
   return (
     <div className='stairs'>
       <button onClick={apiTest}>aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</button>
+      <button onClick={test}>22222222222222222222222222222</button>
       {stairs.map((word, idx) => {
         return(
           <div 

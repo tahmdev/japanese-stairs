@@ -35,9 +35,12 @@ html, body, #root, .App {
   font-size: 1rem;
   padding: 0;
   border: none;
-  outline: none;
   overflow: hidden;
   resize: none;
+  outline: none;
+}
+.magic-input:focus{
+  box-shadow: inset 0px 0px 1px 3px rgb(114, 156, 235);
 }
 .horizontal-input{
   height: 1rem;
