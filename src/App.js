@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react';
 import './App.css';
 import MagicInput from './components/magicInput';
 
+// SETTINGS, WEBSOCKET, PVP
+
 function App() {
   const [stairs, setStairs] = useState(["育児","児童文学","学園","園庭", "庭中", "中学校", "校門", "門粒" ])
 
@@ -14,11 +16,12 @@ function App() {
 
 export default App;
 
+let apiUrl = "http://localhost:9000/stairs/"
 
 const StairDisplay = ({stairs, setStairs}) => {
   const [length, setLength] = useState([])
   const [height, setHeight] = useState([])
-  const [currentInput, setCurrentInput] = useState("物乞い")
+  const [currentInput, setCurrentInput] = useState("")
 
   useEffect(() => {
     let newLength = [0]
@@ -38,12 +41,11 @@ const StairDisplay = ({stairs, setStairs}) => {
 
   const handleEnter = (e) => {
     if (e.key === "Enter") {
-      if (stairs.at(-1).at(-1)  === currentInput.replace(/\s/g, "").at(0)){ // Check if word AND Has no hiragana 
+      if (stairs.at(-1).at(-1)  === currentInput.replace(/\s/g, "").at(0) && !stairs.includes(currentInput.replace(/\s/g, ""))){ // Check if word AND Has no hiragana 
         setStairs(prevStairs => [...prevStairs, currentInput.replace(/\s/g, "")])
         setCurrentInput("")
       }else{
         console.log("nope")
-        
       }
       setCurrentInput("")
     }
@@ -58,9 +60,16 @@ const StairDisplay = ({stairs, setStairs}) => {
     }
   }, [currentInput])
 
+  const apiTest = () => {
+    console.log("testing")
+    fetch(apiUrl + "kanji/頭痛/stairsdaily/userName", {method: "POST"})
+    .then(res => res.json())
+    .then(json => console.log(json))
+  }
+
   return (
     <div className='stairs'>
-      <button onClick={() => setCurrentInput("")}>aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</button>
+      <button onClick={apiTest}>aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</button>
       {stairs.map((word, idx) => {
         return(
           <div 
@@ -71,8 +80,7 @@ const StairDisplay = ({stairs, setStairs}) => {
           </div>
         )
       })}
-      {stairs.length % 2 === 0 &&  
-      <MagicInput inputClass="horizontal-input" setCurrentInput={setCurrentInput} text={currentInput} position={{left: `${length.at(-1) + 1}rem`, top: `${height.at(-1)}rem`}} />}
+      {stairs.length % 2 === 0 &&  <MagicInput inputClass="horizontal-input" setCurrentInput={setCurrentInput} text={currentInput} position={{left: `${length.at(-1) + 1}rem`, top: `${height.at(-1)}rem`}} />}
       {stairs.length % 2 !== 0 &&  <MagicInput outputClass="vertical-output"  inputClass="vertical-input" setCurrentInput={setCurrentInput} text={currentInput} position={{left: `${length.at(-1)}rem`, top: `${height.at(-1) + 1}rem`}} />}
       <div className='info' style={{left: `${length.at(-1) }rem`, top: `${height.at(-1) + 1 }rem`}}> Enter a word that starts with {stairs.at(-1).slice(-1)} </div>
     </div>
