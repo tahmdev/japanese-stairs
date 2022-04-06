@@ -7,7 +7,9 @@ import useWebSocket, { ReadyState } from 'react-use-websocket';
 // SETTINGS, WEBSOCKET, PVP
 // Next steps: 
 
-// ADD LOCAL DICTIONARY TO REDUCE DELAY ON CONFIRMING WORDS EXISTENCE 
+// MOVE STAIR DISPLAY TO DIFFERENT FILE 
+// THIS IS THE DAILY KANJI / STARTING PAGE
+// ADD VerifyKanji and VerifyClassic Functions to Stairdisplay.js and pass them as props to verify depending on mode
 // Make game reset every 24 hours 
 // Multiplayer 
 //  1v1 + 2v2, 
@@ -47,9 +49,6 @@ function App() {
 export default App;
 
 
-
-
-
 const StairDisplay = ({stairs, setStairs, sendMessage}) => {
   const [length, setLength] = useState([])
   const [height, setHeight] = useState([])
@@ -77,14 +76,14 @@ const StairDisplay = ({stairs, setStairs, sendMessage}) => {
       
       let cleanInput = currentInput.replace(/\s/g, "")
 
-      fetch(apiUrl + "jisho/" + cleanInput)
+      fetch(apiUrl + "jishoKanji/" + cleanInput)
       .then(res => res.json())
       .then(json => {
-        if (json.length > 0){
-          if (stairs.at(-1).at(-1)  === cleanInput.at(0) // if new starts with last char of old
-          && !stairs.includes(cleanInput)                // is not a repeat
-          && cleanInput.length >= 2                      // At least 2 characters long
-          && cleanInput.length <= 4){                    // not longer than 4 characters
+        if (json){
+          if (stairs.at(-1).at(-1)  === cleanInput.at(0)  // if new starts with last char of old
+            && !stairs.includes(cleanInput)               // is not a repeat
+            && cleanInput.length >= 2                     // At least 2 characters long
+            && cleanInput.length <= 4){                   // not longer than 4 characters
             sendMessage(cleanInput)
             console.log("YEP")
             console.log()
@@ -95,14 +94,11 @@ const StairDisplay = ({stairs, setStairs, sendMessage}) => {
           console.log("not a real word")
         }
       })
-      // Verify input locally 
-      
       setCurrentInput("")
     }
   }
 
   useEffect(() => {
-    
     // keep input on screen
     document.getElementById("magic-output").scrollIntoView({behavior: "smooth", block: "end", inline: "nearest"})
     
@@ -118,11 +114,13 @@ const StairDisplay = ({stairs, setStairs, sendMessage}) => {
     .then(res => res.json())
     .then(json => console.log(json))
   }
+
   const test =() => {
     let re = new RegExp(/^[\u4e00-\u9faf\u3400-\u4dbf]+$/, "g")
     let owo = "供物"
     console.log(re.test(owo))
   }
+
   return (
     <div className='stairs'>
       <button onClick={apiTest}>aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</button>
