@@ -1,43 +1,49 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useState } from 'react';
 import './App.css';
 import { BrowserRouter as Router, Route, Routes} from "react-router-dom" 
 import socketIOClient from "socket.io-client";
-import StairDisplay from './components/StairDisplay';
-import { useNavigate } from 'react-router-dom';
 import Lobby from './components/lobby';
-
+import CreateLobby from './components/createLobby';
 const socket = socketIOClient("http://localhost:7000/");
 
-// SETTINGS, WEBSOCKET, PVP
 // Next steps: 
 
-// ADD VerifyKanji and VerifyClassic Functions to Stairdisplay.js and pass them as props to verify depending on mode
-// Make game reset every 24 hours 
 
-//Single player zen mode
-
+//Single player zen mode with localstorage
 // Multiplayer modes:
 //  1v1 + 2v2, 
 // Going in circle
 //  Time based + lead based
-
 // All of the above with shiritori
 
-let apiUrl = "http://localhost:9000/stairs/"
+// limit settings (name length, password length)
+
+//Fill out rest of settings / modes
+
+// Add turns
+// Make game respect settings
+// ADD VerifyKanji and VerifyClassic Functions to Stairdisplay.js and pass them as props to verify depending on mode
+// Make password functional
+// Make game reset every 24 hours 
+// style scrollbar
 
 function App() {
   let [id, setId] = useState()
+  let [showCreateRoom, setShowCreateRoom] = useState(false)
+  const [room, setRoom] = useState("dailyKanji")
 
   return (
     <Router>
       <header>
         <div>Navbar here</div>
-        {<CreateLobby socket={socket} setId={setId} /> }
+        <button onClick={() => socket.emit("logRooms")}>LOG ROOMS</button>
+        <button onClick={() => setShowCreateRoom(true)}> Show Create Room </button>
+        {showCreateRoom && <CreateLobby socket={socket} setId={setId} setShowCreateRoom={setShowCreateRoom}  /> }
       </header>
       <div className="App">
         <Routes>
-          <Route path={"/"} element={<Lobby socket={socket} apiUrl={apiUrl} />} />
-          <Route path={"/:roomID"} element={<Lobby key={id} socket={socket} apiUrl={apiUrl} />} />
+          <Route path={"/"} element={<Lobby socket={socket} room={room} setRoom={setRoom} />} />
+          <Route path={"/:roomID"} element={<Lobby key={id} socket={socket} room={room} setRoom={setRoom} />} />
         </Routes>
       </div>
     </Router>
@@ -47,24 +53,3 @@ function App() {
 export default App;
 
 
-const CreateLobby = ({ setId }) => {
-  const navigate = useNavigate();
-  
-  const handleCreate = () => {
-    let id ="";
-    let characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
-  
-    for (let i = 0; i < 16; i++){
-      id += characters.charAt(Math.floor(Math.random() * characters.length))
-    }
-    setId(id)
-    socket.emit("createRoom", id)
-    navigate(`/${id}`);
-  }
-  return (
-    <div>
-     <button onClick={handleCreate}> Create Lobby</button>
-    </div>
-  )
-}
-// Create lobby => redirect to lobby(which hasnt started) 
