@@ -2,11 +2,11 @@ import { useNavigate } from 'react-router-dom';
 import React, { useEffect, useState } from 'react';
 import settings from './settingComponents.js';
 
-const CreateLobby = ({ setId, setShowCreateRoom, socket }) => {
+const CreateEditLobby = ({ setShow, functions }) => {
 
   let [mode, setMode] = useState("しりとり");
-  let [lobbyName, setLobbyName] = useState();
-  let [password, setPassword] = useState();
+  let [lobbyName, setLobbyName] = useState("");
+  let [password, setPassword] = useState("");
   let [startingWord, setStartingWord] = useState("漢字");
   let [playerLimit, setPlayerLimit] = useState(4);
 
@@ -17,29 +17,22 @@ const CreateLobby = ({ setId, setShowCreateRoom, socket }) => {
   let [roundTime, setRoundTime] = useState(3);
 
   let popupRef = React.createRef();
-
-  const navigate = useNavigate();
   
-  const handleCreate = (e) => {
+  const handleClick = (e, func) => {
     e.preventDefault();
-
-    let id ="";
-    let characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
-    for (let i = 0; i < 16; i++){
-      id += characters.charAt(Math.floor(Math.random() * characters.length))
-    }
     let roomSettings = {
-      id: id,
       mode: mode,
       name: lobbyName,
       password: password,
       startingWord: startingWord,
-      playerLimit: playerLimit
+      playerLimit: playerLimit,
+      turnLength: turnLength,
+      turnReduce: turnReduce,
+      leadToWin: leadToWin,
+      roundTime: roundTime,
     }
-    setShowCreateRoom(false)
-    setId(id)
-    socket.emit("createRoom", roomSettings)
-    navigate(`/${id}`);
+    setShow(false)
+    func(roomSettings)
   }
 
   useEffect(() => {
@@ -47,14 +40,14 @@ const CreateLobby = ({ setId, setShowCreateRoom, socket }) => {
     return () => {
       document.removeEventListener("mousedown", hidePopup)
     }
-  }, [])
+  }, [mode, lobbyName, password, startingWord, playerLimit, turnLength, turnReduce, roundTime, leadToWin])
 
   const hidePopup = (e) => {
     if (!popupRef.current.contains(e.target)){
-      setShowCreateRoom(false)
+      setShow(false)
     }
   }
-  
+
   let {ModeSelect, NumberInput, TextInput} = settings;
   return (
     <div className='popup' ref={popupRef}>
@@ -67,12 +60,36 @@ const CreateLobby = ({ setId, setShowCreateRoom, socket }) => {
        <span>Mode settings:</span>
        {mode === "しりとり" && 
        <>
-        <NumberInput state={setTurnLength} setState={setTurnLength} name="Turn length" label="Turn Length: " />
+        <NumberInput state={turnLength} setState={setTurnLength} name="turn-length" label="Turn Length: " />
+        <NumberInput state={turnReduce} setState={setTurnReduce} name="turn-reduce" label="Reduce per turn: " />
        </>
        }
-       <button onClick={handleCreate} > Create Lobby</button>
+       {mode === "Team (lead)" &&
+        <>
+          <NumberInput state={turnLength} setState={setTurnLength} name="turn-length" label="Turn Length: " />
+          <NumberInput state={leadToWin} setState={setLeadToWin} name="lead-to-win" label="Lead to win: " />
+        </>
+       }
+       {
+         mode === "Team (time)" &&
+         <>
+            <NumberInput state={turnLength} setState={setTurnLength} name="turn-length" label="Turn Length: " />
+            <NumberInput state={roundTime} setState={setRoundTime} name="round-time" label="Round time: " />
+         </>
+       }
+       <div className='edit-create-button-wrapper'>
+        {functions.map(item => {
+          return(
+            <button 
+              key={item.name} 
+              onClick={e => handleClick(e, item.func)}> 
+              {item.name} 
+            </button>
+          )
+        })}
+       </div>
       </form>
     </div>
   )
 }
-export default CreateLobby
+export default CreateEditLobby

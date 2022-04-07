@@ -2,10 +2,11 @@ const ModeSelect = ({setMode, mode}) => {
   return(
     <div className='form-flex'>
       <label htmlFor="mode-input">Mode: </label>
-      <select id="mode-input" name="mode" onChange={e => setMode(e.target.value)} value={{mode}}>
+      <select id="mode-input" name="mode" onChange={e => setMode(e.target.value)} value={mode}>
         <option>しりとり</option>
-        <option>漢字とり</option>
-        <option>Temp</option>
+        <option>Team (lead)</option>
+        <option>Team (time)</option>
+        <option>漢字取</option>
       </select>
     </div>
   )

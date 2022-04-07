@@ -82,6 +82,7 @@ html, body, #root, .App {
 .popup{
   width: 90%;
   left: 50%;
+  top: 10vh;
   transform: translateX(-50%);
   height: fit-content;
   min-height: 100px;
@@ -106,7 +107,10 @@ html, body, #root, .App {
   width: 100%;
   max-width: 240px;
 }
-
+.edit-create-button-wrapper{
+  display: flex;
+  justify-content: space-around;
+}
 #starting-word{
   max-width: 128px;
 }
@@ -123,7 +127,7 @@ html, body, #root, .App {
   margin: 0.5rem;
 }
 .roomSettingPage > *{
-  margin-left: 0.5rem;
+  margin-left: 0.3rem;
   margin-top: 0.6rem;
   max-width: 520px;
 }
@@ -131,23 +135,65 @@ html, body, #root, .App {
   list-style: none;
   margin: 0;
   padding: 0;
+  font-size: 24px;
 }
 .roomSettingPage h1{
   font-size: 32px;
   margin-bottom: 0;
 }
 .roomSettingPage > ul > li{
-  margin-left: 0.5rem;
+  margin-left: 0.3rem;
 }
 .roomSettingPage > ul > li:first-child{
+  margin-top: 0.5rem;
   color: orange;
-  margin-left: 0.5rem;
+}
+.roomSettingPage > .form-flex > label{
+  font-size: 16px;
+}
+.roomSettingPage > .form-flex{
+  justify-content: center;
+  gap: 10px;
 }
 #roomMode{
   margin: 0;
-  margin-bottom: 1rem;
   display: block;
   padding-right: 0.5rem;
   border-bottom: 1px solid white;
   text-align: end;
+  font-size: 24px;
+}
+.mode-setting-wrapper{
+  padding: 0;
+  margin: 0;
+}
+.mode-settings{
+  font-size: 16px;
+  display: flex;
+  flex-direction: column;
+  border-bottom: 1px solid white;
+}
+.mode-settings > span {
+  padding: 0.1rem 0.3rem;
+}
+
+.mode-settings-edit{
+  border-top: 1px solid white;
+  border-bottom: 1px solid white;
+  margin: 0;
+  display: flex;
+  justify-content: space-around;
+  padding-right: 0.5rem;
+  font-size: 16px;
+  flex-wrap: wrap;
+}
+.mode-settings-edit .form-flex{
+  margin-left: 0.5rem;
+  padding: 0.2rem 0;
+  align-items: center;
+}
+.space-between{
+  width: Calc(100% - 0.6rem);
+  display: flex;
+  justify-content: space-between;
 }
