@@ -19,7 +19,8 @@ const Lobby = ({socket, id, room, setRoom}) => {
     //joins room based on URL OR join dailyKanji
       socket.emit("joinRoom", {roomID: roomID, playerName: "name 2"})
     }else{
-      socket.emit("joinRoom", {roomID: room, playerName: "name here"})
+      socket.emit("joinRoom", {roomID: "dailyKanji", playerName: "name here"})
+      setRoom("dailyKanji")
     }
   }, [roomID]) 
 

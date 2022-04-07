@@ -20,7 +20,7 @@ const socket = socketIOClient("http://localhost:7000/");
 
 //Fill out rest of settings / modes
 
-// Add turns
+// Add turns (should also fix only allowing to join the game between rounds)
 // Make game respect settings
 // ADD VerifyKanji and VerifyClassic Functions to Stairdisplay.js and pass them as props to verify depending on mode
 // Make password functional
