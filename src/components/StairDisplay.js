@@ -1,13 +1,13 @@
 import MagicInput from './magicInput';
-import { useEffect, useState, useCallback } from 'react';
-import { Socket } from 'socket.io-client';
+import { useEffect, useState } from 'react';
 
 let apiUrl = "http://localhost:9000/stairs/"
 
-const StairDisplay = ({stairs, setStairs, socket}) => {
+const StairDisplay = ({ socket, stairs, room, roomInfo}) => {
   const [length, setLength] = useState([])
   const [height, setHeight] = useState([])
   const [currentInput, setCurrentInput] = useState("")
+
 
   // Determine position of next word 
   useEffect(() => {
@@ -26,6 +26,7 @@ const StairDisplay = ({stairs, setStairs, socket}) => {
     setHeight(newHeight)
   }, [stairs])
 
+  // send data to server if word exists
   const handleEnter = (e) => {
     if (e.key === "Enter") {
       
@@ -35,7 +36,7 @@ const StairDisplay = ({stairs, setStairs, socket}) => {
       .then(res => res.json())
       .then(json => {
         if (json){
-              socket.emit("dailyKanji", cleanInput)
+          socket.emit("sendMessage", {word: cleanInput, room: room})
         }else{
           console.log("not a real word")
         }
@@ -44,6 +45,7 @@ const StairDisplay = ({stairs, setStairs, socket}) => {
     }
   }
 
+  // Check for "enter" input
   useEffect(() => {
     // keep input on screen
     document.getElementById("magic-output").scrollIntoView({behavior: "smooth", block: "end", inline: "nearest"})
@@ -54,23 +56,9 @@ const StairDisplay = ({stairs, setStairs, socket}) => {
     }
   }, [currentInput])
 
-  const apiTest = () => {
-    console.log("testing")
-    fetch(apiUrl + `kanji/${currentInput.replace(/\s/g, "")}/stairsdaily/userName`, {method: "POST"})
-    .then(res => res.json())
-    .then(json => console.log(json))
-  }
-
-  const test =() => {
-    let re = new RegExp(/^[\u4e00-\u9faf\u3400-\u4dbf]+$/, "g")
-    let owo = "供物"
-    console.log(re.test(owo))
-  }
-
   return (
     <div className='stairs'>
-      <button onClick={apiTest}>aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</button>
-      <button onClick={test}>22222222222222222222222222222</button>
+      <button onClick={() => console.log(roomInfo)}> aaaaaaaaaaaaaaaaaaaaaaaaaaaaa</button>
       {stairs.map((word, idx) => {
         return(
           <div 
