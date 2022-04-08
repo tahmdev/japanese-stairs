@@ -19,7 +19,7 @@ const Lobby = ({socket, id, room, setRoom}) => {
       setRoom(roomID)
 
     //joins room based on URL OR join dailyKanji
-      socket.emit("joinRoom", {roomID: roomID, playerName: Math.floor(Math.random() * 100)})
+      socket.emit("joinRoom", {roomID: roomID, playerName: Math.random() > 0.5 ? "LONG NAME HERE" : "short"})
     }else{
       socket.emit("joinRoom", {roomID: "dailyKanji", playerName: "name here"})
       setRoom("dailyKanji")

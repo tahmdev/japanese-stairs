@@ -137,7 +137,7 @@ html, body, #root, .App {
   list-style: none;
   margin: 0;
   padding: 0;
-  font-size: 24px;
+  font-size: 20px;
 }
 .roomSettingPage h1{
   font-size: 32px;
@@ -149,6 +149,8 @@ html, body, #root, .App {
 .roomSettingPage > ul > li:first-child{
   margin-top: 0.5rem;
   color: orange;
+  border-bottom: 1px solid orange;
+  width: fit-content;
 }
 .roomSettingPage > .form-flex > label{
   font-size: 16px;
@@ -156,6 +158,33 @@ html, body, #root, .App {
 .roomSettingPage > .form-flex{
   justify-content: center;
   gap: 10px;
+}
+.teams-wrapper{
+  margin-right: 0.3rem;
+  display: flex;
+  justify-content: space-between;
+}
+.teams-wrapper > ul {
+  width: 100%;
+  overflow: hidden;
+  white-space: nowrap;
+}
+.teams-wrapper > ul > li {
+  margin: 0.2rem;
+}
+.red-team{
+  border-right: 1px solid white;
+  color: rgb(245, 116, 116);
+}
+.blue-team{
+  text-align: end;
+  color: rgb(140, 238, 255);
+}
+.team-button-wrapper{
+  display: flex;
+  justify-content: space-between;
+  margin-right: 0.3rem;
+  margin-top: 0;
 }
 #roomMode{
   margin: 0;

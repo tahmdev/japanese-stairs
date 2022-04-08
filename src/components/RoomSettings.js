@@ -1,5 +1,4 @@
 import { useState } from "react"
-import settings from './settingComponents.js';
 import CreateEditLobby from './createLobby';
 
 const RoomSettings = ({roomInfo, socket, roomID}) => {
@@ -22,6 +21,7 @@ const RoomSettings = ({roomInfo, socket, roomID}) => {
     <div className="roomSettingPage">
       {editSettings && 
       <CreateEditLobby 
+        roomInfo={roomInfo}
         functions={[{func: discardSettings, name: "Discard"}, {func: saveSettings, name: "Save"}, ]} 
         setShow={setEditSettings} 
       />}
@@ -29,14 +29,30 @@ const RoomSettings = ({roomInfo, socket, roomID}) => {
       <button onClick={ () => console.log(roomInfo)}> LOG ROOMINFO</button>
       <h1> {roomInfo.settings.name} </h1>
 
-      {roomInfo.settings.mode === "しりとり" &&
-        <div className="mode-setting-wrapper" > 
-            <div className="mode-settings" > 
-              <span id="roomMode"> {roomInfo.settings.mode} </span>
-              <span> Starting word: {roomInfo.stairs[0]} </span>
-              <span> Turn length: {roomInfo.settings.turnLength}s </span>
-              <span> Turn reduce: {roomInfo.settings.turnReduce}s </span>
-            </div>
+      { roomInfo.settings.mode === "漢字取" || roomInfo.settings.mode === "しりとり"
+      ? <div className="mode-setting-wrapper" > 
+          <div className="mode-settings" > 
+            <span id="roomMode"> {roomInfo.settings.mode} </span>
+            <span> Starting word: {roomInfo.stairs[0]} </span>
+            <span> Turn length: {roomInfo.settings.turnLength}s </span>
+          </div>
+        </div>
+      : roomInfo.settings.mode === "Team (lead)" || roomInfo.settings.mode === "漢字取 Team (lead)"
+      ? <div className="mode-setting-wrapper" > 
+          <div className="mode-settings" > 
+            <span id="roomMode"> {roomInfo.settings.mode} </span>
+            <span> Starting word: {roomInfo.stairs[0]} </span>
+            <span> Turn length: {roomInfo.settings.turnLength}s </span>
+            <span> Lead to win: {roomInfo.settings.leadToWin} </span>
+          </div>
+        </div>
+      : <div className="mode-setting-wrapper" > 
+          <div className="mode-settings" > 
+            <span id="roomMode"> {roomInfo.settings.mode} </span>
+            <span> Starting word: {roomInfo.stairs[0]} </span>
+            <span> Turn length: {roomInfo.settings.turnLength}s </span>
+            <span> Round length: {roomInfo.settings.roundTime}s </span>
+          </div>
         </div>
       }
       
@@ -45,18 +61,29 @@ const RoomSettings = ({roomInfo, socket, roomID}) => {
         {socket.id === roomInfo.players[0].id && !editSettings &&
           <button onClick={() => setEditSettings(true)}>Edit settings</button>
         }
-        {socket.id === roomInfo.players[0].id && editSettings &&
-          <div className="button-wrapper ">
-            <button onClick={discardSettings}>Discard</button>
-            <button onClick={saveSettings}>Save </button>
-          </div>
-        }
       </div>
-
-      <ul>
-      {roomInfo.players.map(player => <li key={player.id} >{player.name}</li>)}
-      </ul>
       
+      
+      {
+        roomInfo.settings.mode === "漢字取" || roomInfo.settings.mode === "しりとり"
+        ? <ul>
+            {roomInfo.players.map(player => <li key={player.id} >{player.name}</li>)}
+          </ul>
+        : <>
+            <div className="teams-wrapper"> 
+              <ul className="red-team" > 
+                {roomInfo.players.map(player => player.team === "red" ? <li key={player.id} >{player.name}</li> : null)}
+              </ul>
+              <ul className="blue-team" >
+                {roomInfo.players.map(player => player.team === "blue" ? <li key={player.id} >{player.name}</li> : null)}
+              </ul>
+            </div>
+            <div className="team-button-wrapper">
+              <button className="join-red" onClick={() => socket.emit("joinTeam", {roomID: roomID, team: "red"})}  >Join team</button> 
+              <button className="join-blue" onClick={() => socket.emit("joinTeam", {roomID: roomID, team: "blue"} )}>Join team</button> 
+            </div>
+          </>
+      }
 
       {/*}Host only {*/}
       {socket.id === roomInfo.players[0].id && 

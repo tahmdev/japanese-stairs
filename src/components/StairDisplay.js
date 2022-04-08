@@ -58,12 +58,12 @@ const StairDisplay = ({ socket, stairs, room, roomInfo}) => {
 
   return (
     <div>
-      <div className='order-display'>
-        <span> {roomInfo.order.at(-1).name} </span>
-        <span> {roomInfo.order.at(0).name} </span>
-        <span> {roomInfo.order.length > 1 ? roomInfo.order.at(1).name : roomInfo.order.at(0).name} </span>
-        <span> {roomInfo.currentTurn} </span>
-      </div>
+      <span> {roomInfo.currentTurn} </span>
+      {roomInfo.id !== "dailyKanji" && roomInfo.id !== "dailyShiritori" && <div className='order-display'>
+        <p className='order-name' key={roomInfo.order.at(0).name + "1"} > {roomInfo.order.at(-1).name} </p>
+        <p className='order-name' key={roomInfo.order.at(0).name + "2"} > {roomInfo.order.at(0).name} </p>
+        <p className='order-name' key={roomInfo.order.at(0).name + "3"} > {roomInfo.order.length > 1 ? roomInfo.order.at(1).name : roomInfo.order.at(0).name} </p>
+      </div>}
       <div className='stairs'>
         {stairs.map((word, idx) => {
           return(

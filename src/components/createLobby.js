@@ -2,19 +2,17 @@ import { useNavigate } from 'react-router-dom';
 import React, { useEffect, useState } from 'react';
 import settings from './settingComponents.js';
 
-const CreateEditLobby = ({ setShow, functions }) => {
-
-  let [mode, setMode] = useState("しりとり");
-  let [lobbyName, setLobbyName] = useState("");
-  let [password, setPassword] = useState("");
-  let [startingWord, setStartingWord] = useState("漢字");
-  let [playerLimit, setPlayerLimit] = useState(4);
-
+const CreateEditLobby = ({ setShow, functions, roomInfo }) => {
+ 
+  let [mode, setMode] = useState(roomInfo ? roomInfo.settings.mode : "漢字取");
+  let [lobbyName, setLobbyName] = useState(roomInfo ? roomInfo.settings.name : "");
+  let [password, setPassword] = useState(roomInfo ? roomInfo.settings.password : "");
+  let [startingWord, setStartingWord] = useState(roomInfo ? roomInfo.stairs[0] :"漢字");
+  let [playerLimit, setPlayerLimit] = useState(roomInfo ? roomInfo.settings.playerLimit : 4);
   //Mode based settings
-  let [turnLength, setTurnLength ] = useState(10);
-  let [turnReduce, setTurnReduce ] = useState(0);
-  let [leadToWin, setLeadToWin ] = useState(5);
-  let [roundTime, setRoundTime] = useState(3);
+  let [turnLength, setTurnLength ] = useState(roomInfo ? roomInfo.settings.turnLength : 15);
+  let [leadToWin, setLeadToWin ] = useState(roomInfo ? roomInfo.settings.leadToWin : 5);
+  let [roundTime, setRoundTime] = useState(roomInfo ? roomInfo.settings.roundTime : 120);
 
   let popupRef = React.createRef();
   
@@ -27,7 +25,6 @@ const CreateEditLobby = ({ setShow, functions }) => {
       startingWord: startingWord,
       playerLimit: playerLimit,
       turnLength: turnLength,
-      turnReduce: turnReduce,
       leadToWin: leadToWin,
       roundTime: roundTime,
     }
@@ -40,7 +37,7 @@ const CreateEditLobby = ({ setShow, functions }) => {
     return () => {
       document.removeEventListener("mousedown", hidePopup)
     }
-  }, [mode, lobbyName, password, startingWord, playerLimit, turnLength, turnReduce, roundTime, leadToWin])
+  }, [mode, lobbyName, password, startingWord, playerLimit, turnLength, roundTime, leadToWin])
 
   const hidePopup = (e) => {
     if (!popupRef.current.contains(e.target)){
@@ -58,24 +55,20 @@ const CreateEditLobby = ({ setShow, functions }) => {
         <TextInput state={startingWord} setState={setStartingWord} name="starting-word" label="Starting word: " placeholder="" />
         <NumberInput state={playerLimit} setState={setPlayerLimit} name="player-length-input" label="Player limit: " />
        <span>Mode settings:</span>
-       {mode === "しりとり" && 
-       <>
-        <NumberInput state={turnLength} setState={setTurnLength} name="turn-length" label="Turn Length: " />
-        <NumberInput state={turnReduce} setState={setTurnReduce} name="turn-reduce" label="Reduce per turn: " />
-       </>
-       }
-       {mode === "Team (lead)" &&
-        <>
-          <NumberInput state={turnLength} setState={setTurnLength} name="turn-length" label="Turn Length: " />
-          <NumberInput state={leadToWin} setState={setLeadToWin} name="lead-to-win" label="Lead to win: " />
-        </>
-       }
        {
-         mode === "Team (time)" &&
-         <>
-            <NumberInput state={turnLength} setState={setTurnLength} name="turn-length" label="Turn Length: " />
-            <NumberInput state={roundTime} setState={setRoundTime} name="round-time" label="Round time: " />
-         </>
+         mode === "しりとり" || mode === "漢字取"
+         ?  <>
+              <NumberInput state={turnLength} setState={setTurnLength} name="turn-length" label="Turn Length: " />
+            </>
+        : mode === "Team (lead)" || mode === "漢字取 Team (lead)"
+        ?   <>
+              <NumberInput state={turnLength} setState={setTurnLength} name="turn-length" label="Turn Length: " />
+              <NumberInput state={leadToWin} setState={setLeadToWin} name="lead-to-win" label="Lead to win: " />
+            </>
+        : <>
+              <NumberInput state={turnLength} setState={setTurnLength} name="turn-length" label="Turn Length: " />
+              <NumberInput state={roundTime} setState={setRoundTime} name="round-time" label="Round time: " />
+          </>
        }
        <div className='edit-create-button-wrapper'>
         {functions.map(item => {
