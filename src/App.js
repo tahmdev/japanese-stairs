@@ -6,33 +6,31 @@ import Lobby from './components/lobby';
 import Navbar from './components/navbar';
 const socket = socketIOClient("http://localhost:7000/");
 
-// Next steps: 
-
-
+// Modes: 
 //Single player zen mode with localstorage
 // Multiplayer modes:
-//  1v1 + 2v2, 
-// Going in circle
-//  Time based + lead based
-// All of the above with shiritori
+// DEFAULT: Going in circle
+// Team Time based + lead based
 
-// limit settings (name length, password length)
+// limit settings (name length, password length, )
 
-// Limit settings max length
-
-// Finish game by setting to waiting + popup results
 // Add turns (should also fix only allowing to join the game between rounds)
 // Make game respect settings
-// ADD VerifyKanji and VerifyClassic Functions to Stairdisplay.js and pass them as props to verify depending on mode
-// Make password functional
-// Make game reset every 24 hours 
-// style scrollbar
 
+// Finish game by setting to waiting + popup results
+// Make password functional
+// ADD VerifyKanji and VerifyClassic Functions to Stairdisplay.js and pass them as props to verify depending on mode
+// CHECK IF STARTS WITH LAST OF PREVIOUS WORD 
+// Zoom buttons on bottom left
+// User settings (Name, color, volume)
+
+// EZ Stuff:
+// Make daily games reset every 24 hours (probably gonna happen anyway due to heroku restarting) 
+// style scrollbar
+// Add more  comments, write readmes
 function App() {
   const [room, setRoom] = useState("dailyKanji")
   let [id, setId] = useState()
-
-
 
   return (
     <Router>

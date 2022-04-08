@@ -2,12 +2,14 @@ import StairDisplay from "./StairDisplay";
 import { useEffect, useState } from 'react';
 import {useParams} from "react-router-dom";
 import RoomSettings from "./RoomSettings";
+import ScoreReport from "./ScoreReport";
 
 const Lobby = ({socket, id, room, setRoom}) => {
   let {roomID} = useParams();
   const [stairs, setStairs] = useState(["ロード中"])
   const [roomInfo, setRoomInfo] = useState()
- 
+  let [showScore, setShowScore] = useState()
+  let [score, setScore] = useState()
   // get room on route change
   useEffect(() => {
     console.log(room)
@@ -17,7 +19,7 @@ const Lobby = ({socket, id, room, setRoom}) => {
       setRoom(roomID)
 
     //joins room based on URL OR join dailyKanji
-      socket.emit("joinRoom", {roomID: roomID, playerName: "name 2"})
+      socket.emit("joinRoom", {roomID: roomID, playerName: Math.floor(Math.random() * 100)})
     }else{
       socket.emit("joinRoom", {roomID: "dailyKanji", playerName: "name here"})
       setRoom("dailyKanji")
@@ -31,9 +33,17 @@ const Lobby = ({socket, id, room, setRoom}) => {
     })
     socket.on("newRoomInfo", data => {
       setRoomInfo(data)
+      //set initial values
       setStairs([...data.stairs])
     })
+    socket.on("scoreReport", data => {
+      setScore(data)
+    })
   }, []);
+
+  useEffect(() => {
+    if(score) setShowScore(true)
+  }, [score])
 
   return(
     <div key={id} >
@@ -42,6 +52,7 @@ const Lobby = ({socket, id, room, setRoom}) => {
       {!roomInfo && <div> This lobby does not exist </div>}
       {roomInfo && roomInfo.status === "active" && <StairDisplay roomInfo={roomInfo} stairs={stairs} room={room} socket={socket} />}
       {roomInfo && roomInfo.status === "waiting" && <RoomSettings socket={socket} roomInfo={roomInfo} roomID={roomID} />}
+      {showScore && <ScoreReport data={score} setShowScore={setShowScore} />}
     </div>
   )
 }

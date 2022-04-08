@@ -32,15 +32,3 @@ const NumberInput = ({state, setState, name, label}) => {
 
 let settings = {ModeSelect, NumberInput, TextInput}
 export default settings
-
-
-
-//Modes:
-
-//Classic turn based with optional timer 
-//Turn length
-//Turn length reduce per turn
-
-//Team vs Team
-//Lead => Lead to win
-//Time => Round time, 

@@ -57,22 +57,60 @@ const StairDisplay = ({ socket, stairs, room, roomInfo}) => {
   }, [currentInput])
 
   return (
-    <div className='stairs'>
-      <button onClick={() => console.log(roomInfo)}> aaaaaaaaaaaaaaaaaaaaaaaaaaaaa</button>
-      {stairs.map((word, idx) => {
-        return(
-          <div 
-          key={`${word} ${idx}`} 
-          style={{left: `${length[idx]}rem`, top: `${height[idx]}rem`}}
-          className={`word word${idx} ${idx % 2 === 0 ? "horizontal" : "vertical"}`}> 
-          {word} 
-          </div>
-        )
-      })}
-      {stairs.length % 2 === 0 &&  <MagicInput inputClass="horizontal-input" setCurrentInput={setCurrentInput} text={currentInput} position={{left: `${length.at(-1) + 1}rem`, top: `${height.at(-1)}rem`}} />}
-      {stairs.length % 2 !== 0 &&  <MagicInput outputClass="vertical-output"  inputClass="vertical-input" setCurrentInput={setCurrentInput} text={currentInput} position={{left: `${length.at(-1)}rem`, top: `${height.at(-1) + 1}rem`}} />}
-      <div className='info' style={{left: `${length.at(-1) }rem`, top: `${height.at(-1) + 1 }rem`}}> Enter a word that starts with {stairs.at(-1).slice(-1)} </div>
+    <div>
+      <div className='order-display'>
+        <span> {roomInfo.order.at(-1).name} </span>
+        <span> {roomInfo.order.at(0).name} </span>
+        <span> {roomInfo.order.length > 1 ? roomInfo.order.at(1).name : roomInfo.order.at(0).name} </span>
+        <span> {roomInfo.currentTurn} </span>
+      </div>
+      <div className='stairs'>
+        {stairs.map((word, idx) => {
+          return(
+            <div 
+            key={`${word} ${idx}`} 
+            style={{left: `${length[idx]}rem`, top: `${height[idx]}rem`}}
+            className={`word word${idx} ${idx % 2 === 0 ? "horizontal" : "vertical"}`}> 
+            {word} 
+            </div>
+          )
+        })}
+
+        {stairs.length % 2 === 0 && 
+        <MagicInput 
+          inputClass={`horizontal-input ${
+            roomInfo.id === "dailyKanji" 
+            ? null 
+            : roomInfo.id === "dailyShiritori" 
+            ? null 
+            : roomInfo.order.at(0).id === socket.id 
+            ? null 
+            : "hidden"}
+          `} 
+          setCurrentInput={setCurrentInput} 
+          text={currentInput} 
+          position={{left: `${length.at(-1) + 1}rem`, top: `${height.at(-1)}rem`}} 
+        />}
+        {stairs.length % 2 !== 0 && 
+        <MagicInput 
+          outputClass={`vertical-output `} 
+          inputClass={`vertical-input ${
+            roomInfo.id === "dailyKanji" 
+            ? null 
+            : roomInfo.id === "dailyShiritori" 
+            ? null 
+            : roomInfo.order.at(0).id === socket.id 
+            ? null 
+            : "hidden"}
+          `}
+          setCurrentInput={setCurrentInput} 
+          text={currentInput} 
+          position={{left: `${length.at(-1)}rem`, top: `${height.at(-1) + 1}rem`}} 
+        />}
+        <div className='info' style={{left: `${length.at(-1) }rem`, top: `${height.at(-1) + 1 }rem`}}> Enter a word that starts with {stairs.at(-1).slice(-1)} </div>
+      </div>
     </div>
+      
   )
 }
 
