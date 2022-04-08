@@ -14,14 +14,14 @@ const ScoreReport = ({data, setShowScore}) => {
       setShowScore(false)
     }
   }
-  data.sort((a, b) => a.score + b.score)
+  data.sort((a, b) => b.score - a.score)
   return(
     <div className="popup score-popup" ref={ref}>
       <button onClick={() => setShowScore(false)}> X </button>
       {data.map((player, idx) => {
         return(
           <div key={`${player.id} + ${player.name}`} className="score-wrapper" >
-            <span className="score-text">{idx}. {player.name}</span>
+            <span className="score-text">{idx + 1}. {player.name}</span>
             <span className="score-text">{player.score}</span>
           </div>
         )
