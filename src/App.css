@@ -208,6 +208,10 @@ html, body, #root, .App {
   justify-content: space-between;
   margin: auto;
   margin-top: 1rem;
+  font-size: 24px;
+}
+.score-popup{
+  max-width: 400px;
 }
 .score-popup button{
   position: absolute;
@@ -219,4 +223,34 @@ html, body, #root, .App {
 }
 .score-popup button:hover{
   cursor: pointer;
+}
+.score-text{
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 90%;
+}
+
+.order-display{
+  max-width: 100%;
+  margin: auto;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  height: 64px;
+  color:rgba(255, 255, 255, 0.479);
+}
+.order-name{
+  display: inline-block;
+  white-space: nowrap;
+  overflow: hidden;
+  max-width: 25%;
+  animation-duration: 1000ms;
+}
+.order-name:nth-child(2){
+  color:white;
+  font-size: 32px;
+  max-width: 50%;
 }
