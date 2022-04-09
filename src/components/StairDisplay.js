@@ -72,7 +72,7 @@ const StairDisplay = ({ socket, stairs, room, roomInfo, team, enemy}) => {
   }
 
   return (
-    <div className={team} >
+    <div className={`${team} team`} >
       <span> {roomInfo[team].currentTurn} </span>
       {roomInfo.id !== "dailyKanji" && roomInfo.id !== "dailyShiritori" && <div className='order-display'>
         <p className='order-name' key={roomInfo[team].order.at(0).name + "1"} > {roomInfo[team].order.at(-1).name} </p>

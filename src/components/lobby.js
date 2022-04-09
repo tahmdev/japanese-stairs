@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import {useParams} from "react-router-dom";
 import RoomSettings from "./RoomSettings";
 import ScoreReport from "./ScoreReport";
-
+ import VersusScoreDisplay from "./VersusScoreDisplay";
 const Lobby = ({socket, id, room, setRoom}) => {
   let {roomID} = useParams();
   const [redStairs, setRedStairs] = useState(["ロード中"])
@@ -62,10 +62,12 @@ const Lobby = ({socket, id, room, setRoom}) => {
           : team === "red"
           ? <>
             <StairDisplay roomInfo={roomInfo} stairs={redStairs} room={room} socket={socket} team="red"/> 
+            <VersusScoreDisplay roomInfo={roomInfo} />
             <StairDisplay roomInfo={roomInfo} stairs={blueStairs} room={room} socket={socket} team="blue" enemy={true}/>
             </>
           : <>
               <StairDisplay roomInfo={roomInfo} stairs={blueStairs} room={room} socket={socket} team="blue"/>
+              <VersusScoreDisplay roomInfo={roomInfo}/>
               <StairDisplay roomInfo={roomInfo} stairs={redStairs} room={room} socket={socket} team="red" enemy={true}/> 
             </>
           }
