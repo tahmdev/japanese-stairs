@@ -9,7 +9,7 @@ const socket = socketIOClient("http://localhost:7000/");
 // Modes: 
 // limit settings (name length, password length, )
 
-// max height on stair container
+// max height on stair container (50vw in portrait mode, 100vw in landscape)
 // win conditions
 
 
@@ -17,7 +17,7 @@ const socket = socketIOClient("http://localhost:7000/");
 // Edit settings starting word validation
 // User settings (Name, color, volume)
 // ADD VerifyKanji and VerifyClassic Functions to Stairdisplay.js and pass them as props to verify depending on mode
-
+// fix daily kanji
 
 // EZ Stuff:
 // only start with at least 2 players (and at least 1 in each team)
