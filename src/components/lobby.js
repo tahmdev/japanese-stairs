@@ -6,10 +6,13 @@ import ScoreReport from "./ScoreReport";
 
 const Lobby = ({socket, id, room, setRoom}) => {
   let {roomID} = useParams();
-  const [stairs, setStairs] = useState(["ロード中"])
+  const [redStairs, setRedStairs] = useState(["ロード中"])
+  const [blueStairs, setBlueStairs] = useState(["ロード中"])
   const [roomInfo, setRoomInfo] = useState()
   let [showScore, setShowScore] = useState()
   let [score, setScore] = useState()
+  let [team, setTeam] = useState("red")
+
   // get room on route change
   useEffect(() => {
     console.log(room)
@@ -28,13 +31,15 @@ const Lobby = ({socket, id, room, setRoom}) => {
 
   // update stairs and room info via websocket
   useEffect(() => {
-    socket.on("newMessage", data => {
-      setStairs(data);
+    socket.on("newMessage", (data, team) => {
+      if (team === "red") setRedStairs(data)
+      if (team === "blue") setBlueStairs(data)
     })
     socket.on("newRoomInfo", data => {
       setRoomInfo(data)
       //set initial values
-      setStairs([...data.stairs])
+      setRedStairs(data.red.stairs)
+      setBlueStairs(data.blue.stairs)
     })
     socket.on("scoreReport", data => {
       setScore(data)
@@ -48,10 +53,25 @@ const Lobby = ({socket, id, room, setRoom}) => {
   return(
     <div key={id} >
       <button onClick={() => console.log(roomInfo)} > Log roomInfo</button>
-      <button onClick={() => console.log(room)} > Log CURRENT ROOM</button>
+      <button onClick={() => console.log(redStairs)} > Log RED STAIRS</button>
       {!roomInfo && <div> This lobby does not exist </div>}
-      {roomInfo && roomInfo.status === "active" && <StairDisplay roomInfo={roomInfo} stairs={stairs} room={room} socket={socket} />}
-      {roomInfo && roomInfo.status === "waiting" && <RoomSettings socket={socket} roomInfo={roomInfo} roomID={roomID} />}
+      {roomInfo && roomInfo.status === "active" && 
+        <div className="game-screen">
+          {roomInfo.settings.mode !== "Team (lead)" && roomInfo.settings.mode !== "Team (time)"
+          ? <StairDisplay roomInfo={roomInfo} stairs={redStairs} room={room} socket={socket} team="red"/>
+          : team === "red"
+          ? <>
+            <StairDisplay roomInfo={roomInfo} stairs={redStairs} room={room} socket={socket} team="red"/> 
+            <StairDisplay roomInfo={roomInfo} stairs={blueStairs} room={room} socket={socket} team="blue" enemy={true}/>
+            </>
+          : <>
+              <StairDisplay roomInfo={roomInfo} stairs={blueStairs} room={room} socket={socket} team="blue"/>
+              <StairDisplay roomInfo={roomInfo} stairs={redStairs} room={room} socket={socket} team="red" enemy={true}/> 
+            </>
+          }
+        </div>
+      }
+      {roomInfo && roomInfo.status === "waiting" && <RoomSettings socket={socket} roomInfo={roomInfo} roomID={roomID} setTeam={setTeam} />}
       {showScore && <ScoreReport data={score} setShowScore={setShowScore} />}
     </div>
   )

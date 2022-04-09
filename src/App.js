@@ -7,15 +7,17 @@ import Navbar from './components/navbar';
 const socket = socketIOClient("http://localhost:7000/");
 
 // Modes: 
-//Single player zen mode with localstorage
 // limit settings (name length, password length, )
-// Make password functional
 
-// split screen  
+// max height on stair container
+// win conditions
 
+
+// if password === true => ask for it, on success set password to false  
 // Edit settings starting word validation
 // User settings (Name, color, volume)
 // ADD VerifyKanji and VerifyClassic Functions to Stairdisplay.js and pass them as props to verify depending on mode
+
 
 // EZ Stuff:
 // only start with at least 2 players (and at least 1 in each team)
@@ -23,6 +25,9 @@ const socket = socketIOClient("http://localhost:7000/");
 // Make daily games reset every 24 hours (probably gonna happen anyway due to heroku restarting) 
 // style scrollbar
 // Add more  comments, write readmes
+// copyright thingy jmdict
+//hover z index
+
 function App() {
   const [room, setRoom] = useState("dailyKanji")
   let [id, setId] = useState()

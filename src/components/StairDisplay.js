@@ -3,11 +3,10 @@ import { useEffect, useState } from 'react';
 
 let apiUrl = "http://localhost:9000/stairs/"
 
-const StairDisplay = ({ socket, stairs, room, roomInfo}) => {
+const StairDisplay = ({ socket, stairs, room, roomInfo, team, enemy}) => {
   const [length, setLength] = useState([])
   const [height, setHeight] = useState([])
   const [currentInput, setCurrentInput] = useState("")
-
 
   // Determine position of next word 
   useEffect(() => {
@@ -31,17 +30,19 @@ const StairDisplay = ({ socket, stairs, room, roomInfo}) => {
     if (e.key === "Enter") {
       
       let cleanInput = currentInput.replace(/\s/g, "")
-
-      fetch(apiUrl + "jishoKanji/" + cleanInput)
-      .then(res => res.json())
-      .then(json => {
-        if (json){
-          socket.emit("sendMessage", {word: cleanInput, room: room})
-        }else{
-          console.log("not a real word")
-        }
-      })
-      setCurrentInput("")
+      if (cleanInput){
+        fetch(`${apiUrl}jishoKanji/${cleanInput}`) 
+        .then(res => res.json())
+        .then(json => {
+          if (json){
+            socket.emit("sendMessage", {word: cleanInput, room: room, team: team})
+          }else{
+            console.log("not a real word")
+          }
+        })
+        setCurrentInput("")
+      }
+      
     }
   }
 
@@ -56,20 +57,34 @@ const StairDisplay = ({ socket, stairs, room, roomInfo}) => {
     }
   }, [currentInput])
 
+  const stairStyle = {
+    height: `${height.at(-1) + 6}rem`,
+    
+    MozTransform: enemy ? "scale(-1, 1)" : null,
+    WebkitTransform: enemy ? "scale(-1, 1)": null,
+    OTransform: enemy ? "scale(-1, 1)": null,
+    MsTransform: enemy ? "scale(-1, 1)": null,
+    transform: enemy ? "scale(-1, 1)": null,
+  }
+  const wordStyle = {
+    color: enemy ? "transparent" : "white",
+    pointerEvents: enemy ? "none" : null
+  }
+
   return (
-    <div>
+    <div className={team} >
       <span> {roomInfo.currentTurn} </span>
       {roomInfo.id !== "dailyKanji" && roomInfo.id !== "dailyShiritori" && <div className='order-display'>
-        <p className='order-name' key={roomInfo.order.at(0).name + "1"} > {roomInfo.order.at(-1).name} </p>
-        <p className='order-name' key={roomInfo.order.at(0).name + "2"} > {roomInfo.order.at(0).name} </p>
-        <p className='order-name' key={roomInfo.order.at(0).name + "3"} > {roomInfo.order.length > 1 ? roomInfo.order.at(1).name : roomInfo.order.at(0).name} </p>
+        <p className='order-name' key={roomInfo[team].order.at(0).name + "1"} > {roomInfo[team].order.at(-1).name} </p>
+        <p className='order-name' key={roomInfo[team].order.at(0).name + "2"} > {roomInfo[team].order.at(0).name} </p>
+        <p className='order-name' key={roomInfo[team].order.at(0).name + "3"} > {roomInfo[team].order.length > 1 ? roomInfo[team].order.at(1).name : roomInfo[team].order.at(0).name} </p>
       </div>}
-      <div className='stairs'>
+      <div className='stairs' style={ stairStyle } >
         {stairs.map((word, idx) => {
           return(
             <div 
             key={`${word} ${idx}`} 
-            style={{left: `${length[idx]}rem`, top: `${height[idx]}rem`}}
+            style={{left: `${length[idx]}rem`, top: `${height[idx]}rem`, ...wordStyle}}
             className={`word word${idx} ${idx % 2 === 0 ? "horizontal" : "vertical"}`}> 
             {word} 
             </div>
@@ -83,7 +98,7 @@ const StairDisplay = ({ socket, stairs, room, roomInfo}) => {
             ? null 
             : roomInfo.id === "dailyShiritori" 
             ? null 
-            : roomInfo.order.at(0).id === socket.id 
+            : roomInfo[team].order.at(0).id === socket.id 
             ? null 
             : "hidden"}
           `} 
@@ -99,7 +114,7 @@ const StairDisplay = ({ socket, stairs, room, roomInfo}) => {
             ? null 
             : roomInfo.id === "dailyShiritori" 
             ? null 
-            : roomInfo.order.at(0).id === socket.id 
+            : roomInfo[team].order.at(0).id === socket.id 
             ? null 
             : "hidden"}
           `}

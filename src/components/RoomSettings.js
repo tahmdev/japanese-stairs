@@ -1,7 +1,7 @@
 import { useState } from "react"
 import CreateEditLobby from './createLobby';
 
-const RoomSettings = ({roomInfo, socket, roomID}) => {
+const RoomSettings = ({roomInfo, socket, roomID, setTeam}) => {
   let [editSettings, setEditSettings] = useState(false)
 
   const startGame = () => {
@@ -15,6 +15,11 @@ const RoomSettings = ({roomInfo, socket, roomID}) => {
 
   const discardSettings = () => {
     setEditSettings(false)
+  }
+
+  const joinTeam = (team) => {
+    setTeam(team)
+    socket.emit("joinTeam", {roomID: roomID, team: team} )
   }
 
   return(
@@ -33,7 +38,7 @@ const RoomSettings = ({roomInfo, socket, roomID}) => {
       ? <div className="mode-setting-wrapper" > 
           <div className="mode-settings" > 
             <span id="roomMode"> {roomInfo.settings.mode} </span>
-            <span> Starting word: {roomInfo.stairs[0]} </span>
+            <span> Starting word: {roomInfo.red.stairs[0]} </span>
             <span> Turn length: {roomInfo.settings.turnLength}s </span>
           </div>
         </div>
@@ -41,7 +46,7 @@ const RoomSettings = ({roomInfo, socket, roomID}) => {
       ? <div className="mode-setting-wrapper" > 
           <div className="mode-settings" > 
             <span id="roomMode"> {roomInfo.settings.mode} </span>
-            <span> Starting word: {roomInfo.stairs[0]} </span>
+            <span> Starting word: {roomInfo.red.stairs[0]} </span>
             <span> Turn length: {roomInfo.settings.turnLength}s </span>
             <span> Lead to win: {roomInfo.settings.leadToWin} </span>
           </div>
@@ -49,7 +54,7 @@ const RoomSettings = ({roomInfo, socket, roomID}) => {
       : <div className="mode-setting-wrapper" > 
           <div className="mode-settings" > 
             <span id="roomMode"> {roomInfo.settings.mode} </span>
-            <span> Starting word: {roomInfo.stairs[0]} </span>
+            <span> Starting word: {roomInfo.red.stairs[0]} </span>
             <span> Turn length: {roomInfo.settings.turnLength}s </span>
             <span> Round length: {roomInfo.settings.roundTime}s </span>
           </div>
@@ -79,8 +84,8 @@ const RoomSettings = ({roomInfo, socket, roomID}) => {
               </ul>
             </div>
             <div className="team-button-wrapper">
-              <button className="join-red" onClick={() => socket.emit("joinTeam", {roomID: roomID, team: "red"})}  >Join team</button> 
-              <button className="join-blue" onClick={() => socket.emit("joinTeam", {roomID: roomID, team: "blue"} )}>Join team</button> 
+              <button className="join-red" onClick={() => joinTeam("red")}  >Join team</button> 
+              <button className="join-blue" onClick={() => joinTeam("blue")}>Join team</button> 
             </div>
           </>
       }

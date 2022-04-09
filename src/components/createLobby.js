@@ -7,7 +7,7 @@ const CreateEditLobby = ({ setShow, functions, roomInfo }) => {
   let [mode, setMode] = useState(roomInfo ? roomInfo.settings.mode : "漢字取");
   let [lobbyName, setLobbyName] = useState(roomInfo ? roomInfo.settings.name : "");
   let [password, setPassword] = useState(roomInfo ? roomInfo.settings.password : "");
-  let [startingWord, setStartingWord] = useState(roomInfo ? roomInfo.stairs[0] :"漢字");
+  let [startingWord, setStartingWord] = useState(roomInfo ? roomInfo.red.stairs[0] :"漢字");
   let [playerLimit, setPlayerLimit] = useState(roomInfo ? roomInfo.settings.playerLimit : 4);
   //Mode based settings
   let [turnLength, setTurnLength ] = useState(roomInfo ? roomInfo.settings.turnLength : 15);
