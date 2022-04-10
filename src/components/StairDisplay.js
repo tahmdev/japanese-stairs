@@ -31,6 +31,7 @@ const StairDisplay = ({ socket, stairs, room, roomInfo, team, enemy}) => {
       
       let cleanInput = currentInput.replace(/\s/g, "")
       if (cleanInput){
+        console.log("aaaa")
         fetch(`${apiUrl}jishoKanji/${cleanInput}`) 
         .then(res => res.json())
         .then(json => {
@@ -48,14 +49,19 @@ const StairDisplay = ({ socket, stairs, room, roomInfo, team, enemy}) => {
 
   // Check for "enter" input
   useEffect(() => {
-    // keep input on screen
-    document.getElementById("magic-output").scrollIntoView({behavior: "smooth", block: "end", inline: "nearest"})
     
     document.addEventListener("keydown", handleEnter)
     return () => {
       document.removeEventListener("keydown", handleEnter)
     }
   }, [currentInput])
+  
+  // keep input on screen
+  useEffect(() => {
+    let stairElement = document.getElementById("magic-output").parentNode
+    stairElement.scrollTop = stairElement.scrollHeight; // - 50% height
+
+  }, [stairs, currentInput])
 
   const stairStyle = {
     height: `${height.at(-1) + 6}rem`,
@@ -73,7 +79,7 @@ const StairDisplay = ({ socket, stairs, room, roomInfo, team, enemy}) => {
 
   return (
     <div className={`${team} team`} >
-      <span className='current-turn-timer'> {roomInfo[team].currentTurn} </span>
+      {roomInfo.id !== "dailyKanji" && roomInfo.id !== "dailyShiritori" && <span className='current-turn-timer'> {roomInfo[team].currentTurn} </span>}
       {roomInfo.id !== "dailyKanji" && roomInfo.id !== "dailyShiritori" && <div className='order-display'>
         <p className='order-name' key={roomInfo[team].order.at(0).name + "1"} > {roomInfo[team].order.at(-1).name} </p>
         <p className='order-name' key={roomInfo[team].order.at(0).name + "2"} > {roomInfo[team].order.at(0).name} </p>

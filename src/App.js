@@ -6,29 +6,25 @@ import Lobby from './components/lobby';
 import Navbar from './components/navbar';
 const socket = socketIOClient("http://localhost:7000/");
 
-// Modes: 
-// limit settings (name length, password length, )
+// on leave & disconnect: if room.players.length = 0 => remove room
 
-// Add timer to Team(time)
-// Fix layout in general
+// limit settings (name length, password length, )
+// make player limit functional
+// make the game not break if started with < 2 players
+// if password === true => ask for it, on success set password to false  
+
+// User settings (Name, color, volume)
 
 // Make kanjitori & shiritori seperate from other mdoe selections 
-// if password === true => ask for it, on success set password to false  
-// Edit settings starting word validation <= Didn't I add this already?
-// User settings (Name, color, volume)
 // ADD VerifyKanji and VerifyClassic Functions to Stairdisplay.js and pass them as props to verify depending on mode
-// fix daily kanji
-// make screen focused on bottom right 
+
 // lobby browser
 
-// EZ Stuff:
-// only start with at least 2 players (and at least 1 in each team)
 // Make server not crash if lobby doesnt exist
-// Make daily games reset every 24 hours (probably gonna happen anyway due to heroku restarting) 
-// style scrollbar
-// Add more  comments, write readmes
+
+// Add more  comments, write readme
 // copyright thingy jmdict
-//hover z index
+// Fix layout in general
 
 function App() {
   const [room, setRoom] = useState("dailyKanji")

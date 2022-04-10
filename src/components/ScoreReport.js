@@ -31,7 +31,9 @@ const ScoreReport = ({data, setShowScore, roomInfo}) => {
         ? <span className="red-score-report"> Red wins! </span>
         : roomInfo.blue.score > roomInfo.red.score 
         ? <span className="blue-score-report"> Blue wins! </span>
-        : <span className="draw-score-report"> Draw! </span>
+        : roomInfo.blue.score === roomInfo.red.score 
+        ? <span className="draw-score-report"> Draw! </span>
+        : null
       }
     </div>
   )

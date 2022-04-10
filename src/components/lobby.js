@@ -31,7 +31,9 @@ const Lobby = ({socket, id, room, setRoom}) => {
 
   // update stairs and room info via websocket
   useEffect(() => {
-    socket.on("newMessage", (data, team) => {
+    socket.on("newMessage", ({data, team}) => {
+      console.log(data)
+      console.log(team)
       if (team === "red") setRedStairs(data)
       if (team === "blue") setBlueStairs(data)
     })
