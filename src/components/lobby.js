@@ -52,9 +52,8 @@ const Lobby = ({socket, id, room, setRoom}) => {
 
   return(
     <div key={id} >
-      <button onClick={() => console.log(roomInfo)} > Log roomInfo</button>
-      <button onClick={() => console.log(redStairs)} > Log RED STAIRS</button>
       {!roomInfo && <div> This lobby does not exist </div>}
+      {roomInfo && roomInfo.status === "active" && roomInfo.settings.mode === "Team (time)" && <div className="current-turn-timer"> {roomInfo.currentRound} </div> }
       {roomInfo && roomInfo.status === "active" && 
         <div className="game-screen">
           {roomInfo.settings.mode !== "Team (lead)" && roomInfo.settings.mode !== "Team (time)"
@@ -62,19 +61,19 @@ const Lobby = ({socket, id, room, setRoom}) => {
           : team === "red"
           ? <>
             <StairDisplay roomInfo={roomInfo} stairs={redStairs} room={room} socket={socket} team="red"/> 
-            <VersusScoreDisplay roomInfo={roomInfo} />
+            <VersusScoreDisplay roomInfo={roomInfo} team={team}/>
             <StairDisplay roomInfo={roomInfo} stairs={blueStairs} room={room} socket={socket} team="blue" enemy={true}/>
             </>
           : <>
               <StairDisplay roomInfo={roomInfo} stairs={blueStairs} room={room} socket={socket} team="blue"/>
-              <VersusScoreDisplay roomInfo={roomInfo}/>
+              <VersusScoreDisplay roomInfo={roomInfo} team={team}/>
               <StairDisplay roomInfo={roomInfo} stairs={redStairs} room={room} socket={socket} team="red" enemy={true}/> 
             </>
           }
         </div>
       }
       {roomInfo && roomInfo.status === "waiting" && <RoomSettings socket={socket} roomInfo={roomInfo} roomID={roomID} setTeam={setTeam} />}
-      {showScore && <ScoreReport data={score} setShowScore={setShowScore} />}
+      {showScore && <ScoreReport data={score} roomInfo={roomInfo} setShowScore={setShowScore} />}
     </div>
   )
 }

@@ -9,15 +9,17 @@ const socket = socketIOClient("http://localhost:7000/");
 // Modes: 
 // limit settings (name length, password length, )
 
-// max height on stair container (50vw in portrait mode, 100vw in landscape)
-// win conditions
+// Add timer to Team(time)
+// Fix layout in general
 
-
+// Make kanjitori & shiritori seperate from other mdoe selections 
 // if password === true => ask for it, on success set password to false  
-// Edit settings starting word validation
+// Edit settings starting word validation <= Didn't I add this already?
 // User settings (Name, color, volume)
 // ADD VerifyKanji and VerifyClassic Functions to Stairdisplay.js and pass them as props to verify depending on mode
 // fix daily kanji
+// make screen focused on bottom right 
+// lobby browser
 
 // EZ Stuff:
 // only start with at least 2 players (and at least 1 in each team)

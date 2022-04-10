@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 
-const VersusScoreDisplay = ({roomInfo}) => {
+const VersusScoreDisplay = ({roomInfo, team}) => {
 
   let [blueStyle, setBlueStyle] = useState("0%")
   let [redStyle, setRedStyle] = useState("0%")
@@ -24,10 +24,18 @@ const VersusScoreDisplay = ({roomInfo}) => {
     }
   }, [roomInfo.blue.score, roomInfo.red.score])
 
+  if (team === "red"){
+    return(
+      <div className="versus-score-display">
+        <div className="red-score" style={{width: redStyle}}/>
+        <div className="blue-score" style={{width: blueStyle}}/>
+      </div>
+    )
+  }
   return(
     <div className="versus-score-display">
-      <div className="red-score" style={{width: redStyle}}/>
       <div className="blue-score" style={{width: blueStyle}}/>
+      <div className="red-score" style={{width: redStyle}}/>
     </div>
   )
 }
