@@ -22,6 +22,15 @@ const RoomSettings = ({roomInfo, socket, roomID, setTeam}) => {
     socket.emit("joinTeam", {roomID: roomID, team: team} )
   }
 
+  const checkTeamLengths = () => {
+    let red = document.getElementById("red-team")
+    let blue = document.getElementById("blue-team")
+    if (red && blue){
+      if (red.hasChildNodes() && blue.hasChildNodes()) return true
+      else return false
+    }
+  }
+
   return(
     <div className="roomSettingPage">
       {editSettings && 
@@ -42,7 +51,7 @@ const RoomSettings = ({roomInfo, socket, roomID, setTeam}) => {
             <span> Turn length: {roomInfo.settings.turnLength}s </span>
           </div>
         </div>
-      : roomInfo.settings.mode === "Team (lead)" || roomInfo.settings.mode === "漢字取 Team (lead)"
+      : roomInfo.settings.mode === "Team (lead)"
       ? <div className="mode-setting-wrapper" > 
           <div className="mode-settings" > 
             <span id="roomMode"> {roomInfo.settings.mode} </span>
@@ -76,10 +85,10 @@ const RoomSettings = ({roomInfo, socket, roomID, setTeam}) => {
           </ul>
         : <>
             <div className="teams-wrapper"> 
-              <ul className="red-team" > 
+              <ul id="red-team" className="red-team" > 
                 {roomInfo.players.map(player => player.team === "red" ? <li key={player.id} >{player.name}</li> : null)}
               </ul>
-              <ul className="blue-team" >
+              <ul id="blue-team" className="blue-team" >
                 {roomInfo.players.map(player => player.team === "blue" ? <li key={player.id} >{player.name}</li> : null)}
               </ul>
             </div>
@@ -93,12 +102,15 @@ const RoomSettings = ({roomInfo, socket, roomID, setTeam}) => {
       {/*}Host only {*/}
       {socket.id === roomInfo.players[0].id && 
       <div>
-        <button onClick={startGame}>Start game</button>
-      </div>}
 
+        <button onClick={() => console.log(checkTeamLengths())}> LOG TEAMS</button>
+        <button 
+          onClick={startGame} 
+          disabled={roomInfo.settings.mode === "Team (lead)" || roomInfo.settings.mode === "Team (time)" ? !checkTeamLengths() : false}
+        >Start game</button>
+      </div>}
     </div>
   )
-  
 }
 
 export default RoomSettings

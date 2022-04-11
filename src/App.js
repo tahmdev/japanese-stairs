@@ -6,21 +6,15 @@ import Lobby from './components/lobby';
 import Navbar from './components/navbar';
 const socket = socketIOClient("http://localhost:7000/");
 
-// on leave & disconnect: if room.players.length = 0 => remove room
-
 // limit settings (name length, password length, )
 // make player limit functional
-// make the game not break if started with < 2 players
 // if password === true => ask for it, on success set password to false  
-
-// User settings (Name, color, volume)
 
 // Make kanjitori & shiritori seperate from other mdoe selections 
 // ADD VerifyKanji and VerifyClassic Functions to Stairdisplay.js and pass them as props to verify depending on mode
 
-// lobby browser
-
-// Make server not crash if lobby doesnt exist
+// lobby browser => new api call to log rooms (not all the info, just player count, mode, name etc )
+// User settings (Name, color, volume)
 
 // Add more  comments, write readme
 // copyright thingy jmdict
