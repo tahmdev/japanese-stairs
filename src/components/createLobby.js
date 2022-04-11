@@ -1,6 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import React, { useEffect, useState } from 'react';
 import settings from './settingComponents.js';
+import Popup from './popup.js';
 
 const CreateEditLobby = ({ setShow, functions, roomInfo }) => {
  
@@ -9,12 +10,9 @@ const CreateEditLobby = ({ setShow, functions, roomInfo }) => {
   let [password, setPassword] = useState(roomInfo ? roomInfo.settings.password : "");
   let [startingWord, setStartingWord] = useState(roomInfo ? roomInfo.red.stairs[0] :"漢字");
   let [playerLimit, setPlayerLimit] = useState(roomInfo ? roomInfo.settings.playerLimit : 4);
-  //Mode based settings
   let [turnLength, setTurnLength ] = useState(roomInfo ? roomInfo.settings.turnLength : 15);
   let [leadToWin, setLeadToWin ] = useState(roomInfo ? roomInfo.settings.leadToWin : 5);
   let [roundTime, setRoundTime] = useState(roomInfo ? roomInfo.settings.roundTime : 120);
-
-  let popupRef = React.createRef();
   
   const handleClick = (e, func) => {
     e.preventDefault();
@@ -32,22 +30,9 @@ const CreateEditLobby = ({ setShow, functions, roomInfo }) => {
     func(roomSettings)
   }
 
-  useEffect(() => {
-    document.addEventListener("mousedown", hidePopup)
-    return () => {
-      document.removeEventListener("mousedown", hidePopup)
-    }
-  }, [mode, lobbyName, password, startingWord, playerLimit, turnLength, roundTime, leadToWin])
-
-  const hidePopup = (e) => {
-    if (!popupRef.current.contains(e.target)){
-      setShow(false)
-    }
-  }
-
   let {ModeSelect, NumberInput, TextInput} = settings;
   return (
-    <div className='popup' ref={popupRef}>
+    <Popup classes="popup" setShow={setShow}>
       <form className='flex-container-column'>
         <ModeSelect mode={mode} setMode={setMode} />
         <TextInput state={lobbyName} setState={setLobbyName} name="lobby-name-input" label="Lobby name: " placeholder="Lobby name" />
@@ -82,7 +67,7 @@ const CreateEditLobby = ({ setShow, functions, roomInfo }) => {
         })}
        </div>
       </form>
-    </div>
+    </Popup>
   )
 }
 export default CreateEditLobby
