@@ -15,8 +15,6 @@ const Lobby = ({socket, id, room, setRoom}) => {
 
   // get room on route change
   useEffect(() => {
-    console.log(room)
-    console.log("LEAVING NOW", roomID)
     socket.emit("leaveRoom", room)
     if (roomID) {
       setRoom(roomID)
@@ -32,8 +30,6 @@ const Lobby = ({socket, id, room, setRoom}) => {
   // update stairs and room info via websocket
   useEffect(() => {
     socket.on("newMessage", ({data, team}) => {
-      console.log(data)
-      console.log(team)
       if (team === "red") setRedStairs(data)
       if (team === "blue") setBlueStairs(data)
     })

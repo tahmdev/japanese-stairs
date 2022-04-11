@@ -31,11 +31,12 @@ const StairDisplay = ({ socket, stairs, room, roomInfo, team, enemy}) => {
       
       let cleanInput = currentInput.replace(/\s/g, "")
       if (cleanInput){
-        console.log("aaaa")
-        fetch(`${apiUrl}jishoKanji/${cleanInput}`) 
+        fetch(`${apiUrl}jishoKanji/${cleanInput}/${roomInfo.settings.type}`) 
         .then(res => res.json())
         .then(json => {
-          if (json){
+          if (true){
+            console.log(cleanInput)
+            console.log(currentInput)
             socket.emit("sendMessage", {word: cleanInput, room: room, team: team})
           }else{
             console.log("not a real word")

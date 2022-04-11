@@ -1,12 +1,13 @@
-const ModeSelect = ({setMode, mode}) => {
+const SelectInput = ({setState, state, options, name, label}) => {
   return(
     <div className='form-flex'>
-      <label htmlFor="mode-input">Mode: </label>
-      <select id="mode-input" name="mode" onChange={e => setMode(e.target.value)} value={mode}>
-        <option>しりとり</option>
-        <option>Team (lead)</option>
-        <option>Team (time)</option>
-        <option>漢字取</option>
+      <label htmlFor={name}>{label} </label>
+      <select id={name} name={name} onChange={e => setState(e.target.value)} value={state}>
+        {options.map(item => {
+          return(
+            <option key={item}> {item} </option>
+          )
+        })}
       </select>
     </div>
   )
@@ -30,5 +31,5 @@ const NumberInput = ({state, setState, name, label}) => {
   )
 }
 
-let settings = {ModeSelect, NumberInput, TextInput}
+let settings = {SelectInput, NumberInput, TextInput}
 export default settings

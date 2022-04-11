@@ -7,7 +7,7 @@ const ScoreReport = ({data, setShowScore, roomInfo}) => {
   return(
     <Popup classes={"popup score-popup"} setShow={setShowScore}>
         <button onClick={() => setShowScore(false)}> X </button>
-        {roomInfo.settings.mode === "しりとり" || roomInfo.settings.mode === "漢字取" && data.map((player, idx) => {
+        {roomInfo.settings.mode === "Classic" && data.map((player, idx) => {
           return(
             <div key={`${player.id} + ${player.name}`} className="score-wrapper" >
               <span className="score-text">{idx + 1}. {player.name}</span>

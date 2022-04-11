@@ -12,9 +12,11 @@ const socket = socketIOClient("http://localhost:7000/");
 
 // Make kanjitori & shiritori seperate from other mdoe selections 
 // ADD VerifyKanji and VerifyClassic Functions to Stairdisplay.js and pass them as props to verify depending on mode
-
+// insta win on second round bug
 // lobby browser => new api call to log rooms (not all the info, just player count, mode, name etc )
 // User settings (Name, color, volume)
+
+// Add navbar
 
 // Add more  comments, write readme
 // copyright thingy jmdict

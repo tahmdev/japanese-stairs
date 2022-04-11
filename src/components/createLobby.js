@@ -5,10 +5,11 @@ import Popup from './popup.js';
 
 const CreateEditLobby = ({ setShow, functions, roomInfo }) => {
  
-  let [mode, setMode] = useState(roomInfo ? roomInfo.settings.mode : "漢字取");
+  let [type, setType] = useState(roomInfo ? roomInfo.settings.type : "しりとり")
+  let [mode, setMode] = useState(roomInfo ? roomInfo.settings.mode : "Classic");
   let [lobbyName, setLobbyName] = useState(roomInfo ? roomInfo.settings.name : "");
   let [password, setPassword] = useState(roomInfo ? roomInfo.settings.password : "");
-  let [startingWord, setStartingWord] = useState(roomInfo ? roomInfo.red.stairs[0] :"漢字");
+  let [startingWord, setStartingWord] = useState(roomInfo ? roomInfo.red.stairs[0] : "しりとり");
   let [playerLimit, setPlayerLimit] = useState(roomInfo ? roomInfo.settings.playerLimit : 4);
   let [turnLength, setTurnLength ] = useState(roomInfo ? roomInfo.settings.turnLength : 15);
   let [leadToWin, setLeadToWin ] = useState(roomInfo ? roomInfo.settings.leadToWin : 5);
@@ -17,6 +18,7 @@ const CreateEditLobby = ({ setShow, functions, roomInfo }) => {
   const handleClick = (e, func) => {
     e.preventDefault();
     let roomSettings = {
+      type: type,
       mode: mode,
       name: lobbyName,
       password: password,
@@ -30,27 +32,28 @@ const CreateEditLobby = ({ setShow, functions, roomInfo }) => {
     func(roomSettings)
   }
 
-  let {ModeSelect, NumberInput, TextInput} = settings;
+  let {SelectInput, NumberInput, TextInput} = settings;
   return (
     <Popup classes="popup" setShow={setShow}>
       <form className='flex-container-column'>
-        <ModeSelect mode={mode} setMode={setMode} />
+        <SelectInput state={type} setState={setType} options={["しりとり", "漢字取"]} name="mode-select-input" label="Mode: " />
+        <SelectInput state={mode} setState={setMode} options={["Classic", "Team (lead)", "Team (time)"]} name="mode-select-input" label="Mode: " />
         <TextInput state={lobbyName} setState={setLobbyName} name="lobby-name-input" label="Lobby name: " placeholder="Lobby name" />
         <TextInput state={password} setState={setPassword} name="password-input" label="Password: " placeholder="Password (optional)" />
         <TextInput state={startingWord} setState={setStartingWord} name="starting-word" label="Starting word: " placeholder="" />
         <NumberInput state={playerLimit} setState={setPlayerLimit} name="player-length-input" label="Player limit: " />
        <span>Mode settings:</span>
        {
-         mode === "しりとり" || mode === "漢字取"
+         mode === "Classic"
          ?  <>
               <NumberInput state={turnLength} setState={setTurnLength} name="turn-length" label="Turn Length: " />
             </>
-        : mode === "Team (lead)" || mode === "漢字取 Team (lead)"
+        : mode === "Team (lead)"
         ?   <>
               <NumberInput state={turnLength} setState={setTurnLength} name="turn-length" label="Turn Length: " />
               <NumberInput state={leadToWin} setState={setLeadToWin} name="lead-to-win" label="Lead to win: " />
             </>
-        : <>
+        : <> 
               <NumberInput state={turnLength} setState={setTurnLength} name="turn-length" label="Turn Length: " />
               <NumberInput state={roundTime} setState={setRoundTime} name="round-time" label="Round time: " />
           </>

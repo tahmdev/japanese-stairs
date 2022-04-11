@@ -43,7 +43,7 @@ const RoomSettings = ({roomInfo, socket, roomID, setTeam}) => {
       <button onClick={ () => console.log(roomInfo)}> LOG ROOMINFO</button>
       <h1> {roomInfo.settings.name} </h1>
 
-      { roomInfo.settings.mode === "漢字取" || roomInfo.settings.mode === "しりとり"
+      { roomInfo.settings.mode === "Classic"
       ? <div className="mode-setting-wrapper" > 
           <div className="mode-settings" > 
             <span id="roomMode"> {roomInfo.settings.mode} </span>
@@ -79,7 +79,7 @@ const RoomSettings = ({roomInfo, socket, roomID, setTeam}) => {
       
       
       {
-        roomInfo.settings.mode === "漢字取" || roomInfo.settings.mode === "しりとり"
+        roomInfo.settings.mode === "Classic"
         ? <ul>
             {roomInfo.players.map(player => <li key={player.id} >{player.name}</li>)}
           </ul>
