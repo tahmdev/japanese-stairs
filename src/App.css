@@ -191,9 +191,10 @@ html, body, #root, .App {
   margin-right: 0.3rem;
   margin-top: 0;
 }
-#roomMode{
+.roomMode{
   margin: 0;
-  display: block;
+  display: flex;
+  flex-direction: column;
   padding-right: 0.5rem;
   border-bottom: 1px solid white;
   text-align: end;
@@ -353,6 +354,9 @@ html, body, #root, .App {
   display: block;
   width: 100%;
   text-align: center;
+}
+.check-input{
+  justify-content: start !important;
 }
 
 @media only screen and (orientation: landscape){

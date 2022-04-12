@@ -34,9 +34,7 @@ const StairDisplay = ({ socket, stairs, room, roomInfo, team, enemy}) => {
         fetch(`${apiUrl}jishoKanji/${cleanInput}/${roomInfo.settings.type}`) 
         .then(res => res.json())
         .then(json => {
-          if (true){
-            console.log(cleanInput)
-            console.log(currentInput)
+          if (json){
             socket.emit("sendMessage", {word: cleanInput, room: room, team: team})
           }else{
             console.log("not a real word")
@@ -77,7 +75,6 @@ const StairDisplay = ({ socket, stairs, room, roomInfo, team, enemy}) => {
     color: enemy ? "transparent" : "white",
     pointerEvents: enemy ? "none" : null
   }
-
   return (
     <div className={`${team} team`} >
       {roomInfo.id !== "dailyKanji" && roomInfo.id !== "dailyShiritori" && <span className='current-turn-timer'> {roomInfo[team].currentTurn} </span>}

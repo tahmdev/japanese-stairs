@@ -22,6 +22,7 @@ const RoomSettings = ({roomInfo, socket, roomID, setTeam}) => {
     socket.emit("joinTeam", {roomID: roomID, team: team} )
   }
 
+  // Disables start button if teams don't have at least one member
   const checkTeamLengths = () => {
     let red = document.getElementById("red-team")
     let blue = document.getElementById("blue-team")
@@ -42,11 +43,13 @@ const RoomSettings = ({roomInfo, socket, roomID, setTeam}) => {
       
       <button onClick={ () => console.log(roomInfo)}> LOG ROOMINFO</button>
       <h1> {roomInfo.settings.name} </h1>
-
+      <div className="roomMode">
+        <span > {roomInfo.settings.type} </span>
+        <span > {roomInfo.settings.mode} </span>
+      </div>
       { roomInfo.settings.mode === "Classic"
       ? <div className="mode-setting-wrapper" > 
           <div className="mode-settings" > 
-            <span id="roomMode"> {roomInfo.settings.mode} </span>
             <span> Starting word: {roomInfo.red.stairs[0]} </span>
             <span> Turn length: {roomInfo.settings.turnLength}s </span>
           </div>
@@ -54,7 +57,6 @@ const RoomSettings = ({roomInfo, socket, roomID, setTeam}) => {
       : roomInfo.settings.mode === "Team (lead)"
       ? <div className="mode-setting-wrapper" > 
           <div className="mode-settings" > 
-            <span id="roomMode"> {roomInfo.settings.mode} </span>
             <span> Starting word: {roomInfo.red.stairs[0]} </span>
             <span> Turn length: {roomInfo.settings.turnLength}s </span>
             <span> Lead to win: {roomInfo.settings.leadToWin} </span>
@@ -62,7 +64,6 @@ const RoomSettings = ({roomInfo, socket, roomID, setTeam}) => {
         </div>
       : <div className="mode-setting-wrapper" > 
           <div className="mode-settings" > 
-            <span id="roomMode"> {roomInfo.settings.mode} </span>
             <span> Starting word: {roomInfo.red.stairs[0]} </span>
             <span> Turn length: {roomInfo.settings.turnLength}s </span>
             <span> Round length: {roomInfo.settings.roundTime}s </span>
@@ -71,7 +72,7 @@ const RoomSettings = ({roomInfo, socket, roomID, setTeam}) => {
       }
       
       <div className="flex-container space-between">
-        <span> Players: </span>
+        <span> Players({roomInfo.players.length}/{roomInfo.settings.playerLimit}): </span>
         {socket.id === roomInfo.players[0].id && !editSettings &&
           <button onClick={() => setEditSettings(true)}>Edit settings</button>
         }
