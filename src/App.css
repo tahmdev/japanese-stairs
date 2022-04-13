@@ -358,7 +358,40 @@ html, body, #root, .App {
 .check-input{
   justify-content: start !important;
 }
-
+.lobbyBrowser{
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  max-width: 932px;
+  margin: auto;
+}
+.lobbyTemplate {
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  font-size: 14px;
+  width: 95%;
+  height: 5rem;
+  max-width: 300px;
+  border: 2px solid white;
+  color: white;
+  position: relative;
+}
+.lobbyTemplate > h1{
+  margin: 0;
+  margin-left: 7px;
+}
+.lobbyTemplate > span{
+  margin-left: 7px;
+  font-size: 16px;
+}
+.join-btn{
+  position: absolute;
+  top: 80%;
+  left: 80%;
+  font-size: 16px;
+}
 @media only screen and (orientation: landscape){
   .game-screen{
     flex-direction: row;
@@ -387,4 +420,10 @@ html, body, #root, .App {
 .warning{
   font-size: 24px;
   color:rgb(235, 77, 77);
+}
+@media only screen and (min-width: 932px){
+  .lobbyBrowser{
+    justify-content: start;
+
+  }
 }

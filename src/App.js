@@ -5,18 +5,18 @@ import socketIOClient from "socket.io-client";
 import Lobby from './components/lobby';
 import Navbar from './components/navbar';
 import Popup from './components/popup';
+import LobbyBrowser from './routes/LobbyBrowser';
 const socket = socketIOClient("http://localhost:7000/");
 
-// lobby browser => new api call to log rooms (not all the info, just player count, mode, name etc )
 // User settings (Name, color, volume)
-// Server crash on start non existent room
-
 // Add navbar
 
+// Make classic 100 width
 // Add more  comments, write readme
 // copyright thingy jmdict
-// Fix layout in general
 // rename components
+// remove create-react filed from public folder
+
 function App() {
   const [showFull, setShowFull] = useState(false)
   const [room, setRoom] = useState("dailyKanji")
@@ -28,15 +28,16 @@ function App() {
 
   return (
     <Router>
+      <div className="App">
       {showFull && <RoomFullError setShow={setShowFull} />}
       <header>
         <Navbar setId={setId} socket={socket} />
         <button onClick={() => socket.emit("logRooms")}>LOG ROOMS</button>
       </header>
-      <div className="App">
         <Routes>
           <Route path={"/"} element={<Lobby socket={socket} room={room} setRoom={setRoom} />} />
           <Route path={"/:roomID"} element={<Lobby key={id} socket={socket} room={room} setRoom={setRoom} />} />
+          <Route path={"/lobbies"} element={<LobbyBrowser key={id} socket={socket} />} />
         </Routes>
       </div>
     </Router>
