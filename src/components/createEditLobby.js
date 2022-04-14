@@ -1,4 +1,3 @@
-import { useNavigate } from 'react-router-dom';
 import React, { useEffect, useState } from 'react';
 import settings from './settingComponents.js';
 import Popup from './popup.js';

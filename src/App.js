@@ -7,13 +7,8 @@ import Navbar from './components/navbar';
 import Popup from './components/popup';
 import LobbyBrowser from './routes/LobbyBrowser';
 import useLocalstorage from "./hooks/useLocalstorage.js"
-const socket = socketIOClient("http://localhost:7000/");
 
-// Make classic 100 width
-// change title
-// Add more  comments, write readme
-// rename components
-// remove create-react files from public folder
+const socket = socketIOClient("http://localhost:7000/");
 
 function App() {
   let [showFull, setShowFull] = useState(false)
@@ -35,7 +30,6 @@ function App() {
       {showFull && <RoomFullError setShow={setShowFull} />}
       <header>
         <Navbar setId={setId} socket={socket} userSettings={userSettings} setUserSettings={setUserSettings} />
-        <button onClick={() => socket.emit("logRooms")}>LOG ROOMS</button>
       </header>
         <Routes>
           <Route path={"/"} element={<Lobby socket={socket} room={room} setRoom={setRoom} />} />
@@ -48,7 +42,6 @@ function App() {
 }
 
 export default App;
-
 
 const RoomFullError = ({setShow}) => {
 

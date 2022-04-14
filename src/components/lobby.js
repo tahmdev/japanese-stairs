@@ -1,9 +1,10 @@
 import StairDisplay from "./StairDisplay";
 import { useEffect, useState } from 'react';
 import {useParams} from "react-router-dom";
-import RoomSettings from "./RoomSettings";
+import WaitingLobby from "./waitingLobby";
 import ScoreReport from "./ScoreReport";
- import VersusScoreDisplay from "./VersusScoreDisplay";
+import VersusScoreDisplay from "./VersusScoreDisplay";
+
 const Lobby = ({socket, id, room, setRoom, userSettings}) => {
   let {roomID} = useParams();
   const [redStairs, setRedStairs] = useState(["ロード中"])
@@ -56,6 +57,8 @@ const Lobby = ({socket, id, room, setRoom, userSettings}) => {
         <div className="game-screen">
           {roomInfo.settings.mode !== "Team (lead)" && roomInfo.settings.mode !== "Team (time)"
           ? <StairDisplay roomInfo={roomInfo} stairs={redStairs} room={room} socket={socket} team="red" userSettings={userSettings} classic={true} />
+          
+          // Always render own team first and hide enemy teams words 
           : team === "red"
           ? <>
             <StairDisplay roomInfo={roomInfo} stairs={redStairs} room={room} socket={socket} team="red" userSettings={userSettings}/> 
@@ -70,7 +73,7 @@ const Lobby = ({socket, id, room, setRoom, userSettings}) => {
           }
         </div>
       }
-      {roomInfo && roomInfo.status === "waiting" && <RoomSettings socket={socket} roomInfo={roomInfo} roomID={roomID} setTeam={setTeam} />}
+      {roomInfo && roomInfo.status === "waiting" && <WaitingLobby socket={socket} roomInfo={roomInfo} roomID={roomID} setTeam={setTeam} />}
       {showScore && <ScoreReport data={score} roomInfo={roomInfo} setShowScore={setShowScore} />}
     </div>
   )

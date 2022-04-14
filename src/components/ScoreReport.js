@@ -1,6 +1,6 @@
-import { useEffect } from "react";
 import React from "react";
 import Popup from "./popup";
+
 const ScoreReport = ({data, setShowScore, roomInfo}) => {
   
   data.sort((a, b) => b.score - a.score)

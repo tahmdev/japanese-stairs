@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react"
 import { useNavigate } from 'react-router-dom';
-let apiUrl = "http://localhost:9000/stairs/"
 
 const LobbyBrowser = () => {
   let [lobbyList, setLobbyList] = useState()
@@ -13,6 +12,7 @@ const LobbyBrowser = () => {
   useEffect(() => {
     getLobbies();
   }, [])
+  
   if(!lobbyList) return <div>Loading...</div>
   return(
     <div className="lobbyBrowser">
@@ -22,7 +22,6 @@ const LobbyBrowser = () => {
     </div>
   )
 }
-export default LobbyBrowser
 
 const LobbyTemplate = (lobby) => {
   let settings = lobby.lobby.settings
@@ -57,3 +56,4 @@ const LobbyTemplate = (lobby) => {
     </div>
   )
 }
+export default LobbyBrowser

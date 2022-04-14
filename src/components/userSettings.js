@@ -1,6 +1,7 @@
 import settings from './settingComponents.js';
 import Popup from './popup.js';
 import { useState } from 'react';
+
 const UserSettings = ({userSettings, setUserSettings, setShow}) => {
   let [currentName, setCurrentName] = useState(userSettings.name)
   let [currentColor, setCurrentColor] = useState(userSettings.color)

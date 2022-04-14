@@ -1,7 +1,7 @@
 import { useState } from "react"
-import CreateEditLobby from './createLobby';
+import CreateEditLobby from './createEditLobby';
 
-const RoomSettings = ({roomInfo, socket, roomID, setTeam}) => {
+const WaitingLobby = ({roomInfo, socket, roomID, setTeam}) => {
   let [editSettings, setEditSettings] = useState(false)
 
   const startGame = () => {
@@ -41,12 +41,12 @@ const RoomSettings = ({roomInfo, socket, roomID, setTeam}) => {
         setShow={setEditSettings} 
       />}
       
-      <button onClick={ () => console.log(roomInfo)}> LOG ROOMINFO</button>
       <h1> {roomInfo.settings.name} </h1>
       <div className="roomMode">
         <span > {roomInfo.settings.type} </span>
         <span > {roomInfo.settings.mode} </span>
       </div>
+      {/* Display relevant room settings based on mode */}
       { roomInfo.settings.mode === "Classic"
       ? <div className="mode-setting-wrapper" > 
           <div className="mode-settings" > 
@@ -78,7 +78,6 @@ const RoomSettings = ({roomInfo, socket, roomID, setTeam}) => {
         }
       </div>
       
-      
       {
         roomInfo.settings.mode === "Classic"
         ? <ul>
@@ -100,11 +99,10 @@ const RoomSettings = ({roomInfo, socket, roomID, setTeam}) => {
           </>
       }
 
-      {/*}Host only {*/}
+      {/*}Lobby owner only {*/}
       {socket.id === roomInfo.players[0].id && 
       <div>
 
-        <button onClick={() => console.log(checkTeamLengths())}> LOG TEAMS</button>
         <button 
           onClick={startGame} 
           disabled={roomInfo.settings.mode === "Team (lead)" || roomInfo.settings.mode === "Team (time)" ? !checkTeamLengths() : false}
@@ -114,6 +112,6 @@ const RoomSettings = ({roomInfo, socket, roomID, setTeam}) => {
   )
 }
 
-export default RoomSettings
+export default WaitingLobby
 
 //add crown next to host name

@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react"
 
 const VersusScoreDisplay = ({roomInfo, team}) => {
-
   let [blueStyle, setBlueStyle] = useState("0%")
   let [redStyle, setRedStyle] = useState("0%")
+  
   useEffect(() => {
     if (roomInfo.settings.mode === "Team (lead)"){
       let unit = 100 / roomInfo.settings.leadToWin

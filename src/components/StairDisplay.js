@@ -1,6 +1,5 @@
 import MagicInput from './magicInput';
 import { useEffect, useState } from 'react';
-import UserSettings from './userSettings';
 
 let apiUrl = "http://localhost:9000/stairs/"
 
@@ -43,7 +42,6 @@ const StairDisplay = ({ socket, stairs, room, roomInfo, team, enemy, userSetting
         })
         setCurrentInput("")
       }
-      
     }
   }
 
@@ -60,7 +58,6 @@ const StairDisplay = ({ socket, stairs, room, roomInfo, team, enemy, userSetting
   useEffect(() => {
     let stairElement = document.getElementById("magic-output").parentNode
     stairElement.scrollTop = stairElement.scrollHeight; // - 50% height
-
   }, [stairs, currentInput])
 
   const stairStyle = {
@@ -72,11 +69,13 @@ const StairDisplay = ({ socket, stairs, room, roomInfo, team, enemy, userSetting
     MsTransform: enemy ? "scale(-1, 1)": null,
     transform: enemy ? "scale(-1, 1)": null,
   }
+
   const wordStyle = {
     color: enemy ? "transparent" : userSettings.color,
     backgroundColor: userSettings.background,
     pointerEvents: enemy ? "none" : null
   }
+  
   return (
     <div className={`${team} ${classic ? null : "team"}`} >
       {roomInfo.id !== "dailyKanji" && roomInfo.id !== "dailyShiritori" && <span className='current-turn-timer'> {roomInfo[team].currentTurn} </span>}

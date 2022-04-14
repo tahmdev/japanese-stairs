@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import CreateEditLobby from './createLobby';
+import CreateEditLobby from './createEditLobby';
 import UserSettings from './userSettings'; 
 
 const Navbar = ({setId, socket, userSettings, setUserSettings}) => {
