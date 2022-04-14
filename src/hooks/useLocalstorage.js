@@ -5,7 +5,7 @@ export default function useLocalstorage(key, initialValue) {
         //get state from localstorage or return initialvalue 
         return getLocalstorage(key, initialValue)
     })
-
+    
     useEffect(() => {
         localStorage.setItem(key, JSON.stringify(state))
     }, [state])

@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import CreateEditLobby from './createLobby';
+import UserSettings from './userSettings'; 
 
-const Navbar = ({setId, socket}) => {
+const Navbar = ({setId, socket, userSettings, setUserSettings}) => {
   let [showCreateRoom, setShowCreateRoom] = useState(false)
+  let [showUserSettings, setShowUserSettings] = useState(false)
   const navigate = useNavigate();
   
   const createRoom = (settings) => {
@@ -19,8 +21,13 @@ const Navbar = ({setId, socket}) => {
   }
   return(
     <nav>
-      <button onClick={() => setShowCreateRoom(true)}> Show Create Room </button>
-      {showCreateRoom && <CreateEditLobby functions={[{func: createRoom, name: "Create room"}]} setShow={setShowCreateRoom}  /> }
+      <div className='nav-flex'>
+        <button onClick={() => setShowCreateRoom(true)}>Create Room </button>
+        <a href='/lobbies'>Lobbies</a>
+        <button onClick={() => setShowUserSettings(true)} >Settings</button>
+        {showCreateRoom && <CreateEditLobby functions={[{func: createRoom, name: "Create room"}]} setShow={setShowCreateRoom}  /> }
+        {showUserSettings && <UserSettings setShow={setShowUserSettings} userSettings={userSettings} setUserSettings={setUserSettings} /> }
+      </div>
     </nav>
   )
 }

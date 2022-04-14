@@ -6,6 +6,31 @@ html, body, #root, .App {
   font-size: 32px;
   overflow: auto;
 }
+nav{
+  border-bottom: 2px solid white;
+  display: flex;
+  justify-content: center;
+}
+nav > .nav-flex{
+  display: flex;
+  height: 1rem;
+  align-items: center;
+  width: 100%;
+  max-width: 520px;
+  justify-content: space-around;
+}
+.nav-flex > a{
+  text-decoration: none;
+  color: white;
+  font-size: 0.9rem;
+}
+.nav-flex > button {
+  height: 80%;
+  margin-left: 0.1rem;
+}
+.nav-flex > button:hover {
+  cursor: pointer;
+}
 .stairs{
   width: 100%;
   position: relative;
@@ -28,13 +53,11 @@ html, body, #root, .App {
 .vertical{
   word-break: break-all;
   width: 1rem;
-  background-color: orange; 
   color:red;
 
 }
 .horizontal{
   word-break: keep-all;
-  background-color: pink;
 }
 .magic-input {
   position: absolute;
@@ -87,6 +110,8 @@ html, body, #root, .App {
 }
 
 .popup{
+  color: black;
+  font-size: 16px;
   width: 90%;
   left: 50%;
   top: 10vh;
@@ -97,7 +122,16 @@ html, body, #root, .App {
   background-color: white;
   position: fixed;
   z-index: 3;
-  box-shadow: 0px 0px 0px 100vh rgba(0, 0, 0, 0.5);
+}
+.popup-bg{
+  z-index: 2;
+  background-color: rgba(0, 0, 0, 0.363);
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  left: 50%;
 }
 .flex-container-column{
   display: flex;
@@ -195,10 +229,13 @@ html, body, #root, .App {
   margin: 0;
   display: flex;
   flex-direction: column;
-  padding-right: 0.5rem;
   border-bottom: 1px solid white;
   text-align: end;
   font-size: 24px;
+}
+.roomMode > span{
+  margin-right: 0.3rem;
+
 }
 .mode-setting-wrapper{
   padding: 0;
@@ -335,6 +372,7 @@ html, body, #root, .App {
   width: 100%;
   display: block;
   margin-top: 25px;
+  font-size: 32px;
 }
 .red-score-report{
   color:red;
@@ -342,6 +380,7 @@ html, body, #root, .App {
   width: 100%;
   display: block;
   margin-top: 25px;
+  font-size: 32px;
 }
 .draw-score-report{
   color:black;
@@ -349,6 +388,7 @@ html, body, #root, .App {
   width: 100%;
   display: block;
   margin-top: 25px;
+  font-size: 32px;
 }
 .current-turn-timer{
   display: block;
@@ -412,9 +452,6 @@ html, body, #root, .App {
   .team:nth-child(3){
     display: flex;
     flex-direction: column;
-  }
-  .popup{
-    box-shadow: 0px 0px 0px 100vw rgba(0, 0, 0, 0.5);
   }
 }
 .warning{

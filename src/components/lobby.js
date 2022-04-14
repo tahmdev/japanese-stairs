@@ -4,7 +4,7 @@ import {useParams} from "react-router-dom";
 import RoomSettings from "./RoomSettings";
 import ScoreReport from "./ScoreReport";
  import VersusScoreDisplay from "./VersusScoreDisplay";
-const Lobby = ({socket, id, room, setRoom}) => {
+const Lobby = ({socket, id, room, setRoom, userSettings}) => {
   let {roomID} = useParams();
   const [redStairs, setRedStairs] = useState(["ロード中"])
   const [blueStairs, setBlueStairs] = useState(["ロード中"])
@@ -20,9 +20,9 @@ const Lobby = ({socket, id, room, setRoom}) => {
       setRoom(roomID)
 
     //joins room based on URL OR join dailyKanji
-      socket.emit("joinRoom", {roomID: roomID, playerName: Math.random() > 0.5 ? "LONG NAME HERE" : "short"})
+      socket.emit("joinRoom", {roomID: roomID, playerName: userSettings.name})
     }else{
-      socket.emit("joinRoom", {roomID: "dailyKanji", playerName: "name here"})
+      socket.emit("joinRoom", {roomID: "dailyKanji", playerName: userSettings.name})
       setRoom("dailyKanji")
     }
   }, [roomID]) 
@@ -55,17 +55,17 @@ const Lobby = ({socket, id, room, setRoom}) => {
       {roomInfo && roomInfo.status === "active" && 
         <div className="game-screen">
           {roomInfo.settings.mode !== "Team (lead)" && roomInfo.settings.mode !== "Team (time)"
-          ? <StairDisplay roomInfo={roomInfo} stairs={redStairs} room={room} socket={socket} team="red"/>
+          ? <StairDisplay roomInfo={roomInfo} stairs={redStairs} room={room} socket={socket} team="red" userSettings={userSettings} classic={true} />
           : team === "red"
           ? <>
-            <StairDisplay roomInfo={roomInfo} stairs={redStairs} room={room} socket={socket} team="red"/> 
+            <StairDisplay roomInfo={roomInfo} stairs={redStairs} room={room} socket={socket} team="red" userSettings={userSettings}/> 
             <VersusScoreDisplay roomInfo={roomInfo} team={team}/>
-            <StairDisplay roomInfo={roomInfo} stairs={blueStairs} room={room} socket={socket} team="blue" enemy={true}/>
+            <StairDisplay roomInfo={roomInfo} stairs={blueStairs} room={room} socket={socket} team="blue" enemy={true} userSettings={userSettings}/>
             </>
           : <>
-              <StairDisplay roomInfo={roomInfo} stairs={blueStairs} room={room} socket={socket} team="blue"/>
+              <StairDisplay roomInfo={roomInfo} stairs={blueStairs} room={room} socket={socket} team="blue" userSettings={userSettings}/>
               <VersusScoreDisplay roomInfo={roomInfo} team={team}/>
-              <StairDisplay roomInfo={roomInfo} stairs={redStairs} room={room} socket={socket} team="red" enemy={true}/> 
+              <StairDisplay roomInfo={roomInfo} stairs={redStairs} room={room} socket={socket} team="red" enemy={true} userSettings={userSettings}/> 
             </>
           }
         </div>

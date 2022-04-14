@@ -6,20 +6,23 @@ import Lobby from './components/lobby';
 import Navbar from './components/navbar';
 import Popup from './components/popup';
 import LobbyBrowser from './routes/LobbyBrowser';
+import useLocalstorage from "./hooks/useLocalstorage.js"
 const socket = socketIOClient("http://localhost:7000/");
 
-// User settings (Name, color, volume)
-// Add navbar
-
 // Make classic 100 width
+// change title
 // Add more  comments, write readme
-// copyright thingy jmdict
 // rename components
-// remove create-react filed from public folder
+// remove create-react files from public folder
 
 function App() {
-  const [showFull, setShowFull] = useState(false)
-  const [room, setRoom] = useState("dailyKanji")
+  let [showFull, setShowFull] = useState(false)
+  let [room, setRoom] = useState("dailyKanji")
+  let [userSettings, setUserSettings] = useLocalstorage("settings", {
+    name: "anonymous",
+    color: "#FFFFFF",
+    background: "#000000",
+  })
   let [id, setId] = useState()
 
   useEffect(() => {
@@ -31,12 +34,12 @@ function App() {
       <div className="App">
       {showFull && <RoomFullError setShow={setShowFull} />}
       <header>
-        <Navbar setId={setId} socket={socket} />
+        <Navbar setId={setId} socket={socket} userSettings={userSettings} setUserSettings={setUserSettings} />
         <button onClick={() => socket.emit("logRooms")}>LOG ROOMS</button>
       </header>
         <Routes>
           <Route path={"/"} element={<Lobby socket={socket} room={room} setRoom={setRoom} />} />
-          <Route path={"/:roomID"} element={<Lobby key={id} socket={socket} room={room} setRoom={setRoom} />} />
+          <Route path={"/:roomID"} element={<Lobby key={id} socket={socket} room={room} setRoom={setRoom} userSettings={userSettings} />} />
           <Route path={"/lobbies"} element={<LobbyBrowser key={id} socket={socket} />} />
         </Routes>
       </div>

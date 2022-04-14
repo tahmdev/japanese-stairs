@@ -17,8 +17,10 @@ const Popup = ({setShow, children, classes}) => {
   }
 
   return(
-    <div className={classes} ref={ref}>
-      {children}
+    <div className="popup-bg">
+      <div className={classes} ref={ref}>
+        {children}
+      </div>
     </div>
   )
 }

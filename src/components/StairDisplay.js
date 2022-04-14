@@ -1,9 +1,10 @@
 import MagicInput from './magicInput';
 import { useEffect, useState } from 'react';
+import UserSettings from './userSettings';
 
 let apiUrl = "http://localhost:9000/stairs/"
 
-const StairDisplay = ({ socket, stairs, room, roomInfo, team, enemy}) => {
+const StairDisplay = ({ socket, stairs, room, roomInfo, team, enemy, userSettings, classic}) => {
   const [length, setLength] = useState([])
   const [height, setHeight] = useState([])
   const [currentInput, setCurrentInput] = useState("")
@@ -64,7 +65,7 @@ const StairDisplay = ({ socket, stairs, room, roomInfo, team, enemy}) => {
 
   const stairStyle = {
     height: `${height.at(-1) + 6}rem`,
-    
+    maxWidth: classic ? "100vw" : null,
     MozTransform: enemy ? "scale(-1, 1)" : null,
     WebkitTransform: enemy ? "scale(-1, 1)": null,
     OTransform: enemy ? "scale(-1, 1)": null,
@@ -72,11 +73,12 @@ const StairDisplay = ({ socket, stairs, room, roomInfo, team, enemy}) => {
     transform: enemy ? "scale(-1, 1)": null,
   }
   const wordStyle = {
-    color: enemy ? "transparent" : "white",
+    color: enemy ? "transparent" : userSettings.color,
+    backgroundColor: userSettings.background,
     pointerEvents: enemy ? "none" : null
   }
   return (
-    <div className={`${team} team`} >
+    <div className={`${team} ${classic ? null : "team"}`} >
       {roomInfo.id !== "dailyKanji" && roomInfo.id !== "dailyShiritori" && <span className='current-turn-timer'> {roomInfo[team].currentTurn} </span>}
       {roomInfo.id !== "dailyKanji" && roomInfo.id !== "dailyShiritori" && <div className='order-display'>
         <p className='order-name' key={roomInfo[team].order.at(0).name + "1"} > {roomInfo[team].order.at(-1).name} </p>
@@ -126,7 +128,7 @@ const StairDisplay = ({ socket, stairs, room, roomInfo, team, enemy}) => {
           text={currentInput} 
           position={{left: `${length.at(-1)}rem`, top: `${height.at(-1) + 1}rem`}} 
         />}
-        <div className='info' style={{left: `${length.at(-1) }rem`, top: `${height.at(-1) + 1 }rem`}}> Enter a word that starts with {stairs.at(-1).slice(-1)} </div>
+        {!enemy && <div className='info' style={{left: `${length.at(-1) }rem`, top: `${height.at(-1) + 1 }rem`}}> Enter a word that starts with {stairs.at(-1).slice(-1)} </div>}
       </div>
     </div>
       
