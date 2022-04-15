@@ -111,7 +111,9 @@ nav > .nav-flex{
   padding-bottom: 3rem;
   color: rgb(255, 255, 255, 0.6);
 }
-
+.mode-settings-span{
+  margin-top: 0.5rem;
+}
 .popup{
   color: black;
   font-size: 16px;

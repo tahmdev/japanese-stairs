@@ -42,14 +42,16 @@ const CreateEditLobby = ({ setShow, functions, roomInfo }) => {
         <TextInput state={startingWord} setState={setStartingWord} name="starting-word" label="Starting word: " placeholder="" />
         <NumberInput maxValue={16} state={playerLimit} setState={setPlayerLimit} name="player-length-input" label="Player limit: " />
         <NumberInput maxValue={300} state={turnLength} setState={setTurnLength} name="turn-length" label="Turn Length: " />
-       <span>Mode settings:</span>
+       
        {
         mode === "Team (lead)"
         ?   <>
+              <span className='mode-settings-span'>Mode settings:</span>
               <NumberInput maxValue={100} state={leadToWin} setState={setLeadToWin} name="lead-to-win" label="Lead to win: " />
             </>
         : mode === "Team (time)" 
         ? <> 
+              <span className='mode-settings-span'>Mode settings:</span>
               <NumberInput maxValue={3600} state={roundTime} setState={setRoundTime} name="round-time" label="Round time: " />
           </>
         : null
