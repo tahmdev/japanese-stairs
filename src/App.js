@@ -8,7 +8,7 @@ import Popup from './components/popup';
 import LobbyBrowser from './routes/LobbyBrowser';
 import useLocalstorage from "./hooks/useLocalstorage.js"
 
-const socket = socketIOClient("http://localhost:7000/");
+const socket = socketIOClient("ws://book-album.herokuapp.com");
 
 function App() {
   let [showFull, setShowFull] = useState(false)

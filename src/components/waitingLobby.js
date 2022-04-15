@@ -73,7 +73,7 @@ const WaitingLobby = ({roomInfo, socket, roomID, setTeam}) => {
       
       <div className="flex-container space-between">
         <span> Players({roomInfo.players.length}/{roomInfo.settings.playerLimit}): </span>
-        {socket.id === roomInfo.players[0].id && !editSettings &&
+        {socket.id === roomInfo.players[0].id &&
           <button onClick={() => setEditSettings(true)}>Edit settings</button>
         }
       </div>
@@ -102,7 +102,6 @@ const WaitingLobby = ({roomInfo, socket, roomID, setTeam}) => {
       {/*}Lobby owner only {*/}
       {socket.id === roomInfo.players[0].id && 
       <div>
-
         <button 
           onClick={startGame} 
           disabled={roomInfo.settings.mode === "Team (lead)" || roomInfo.settings.mode === "Team (time)" ? !checkTeamLengths() : false}

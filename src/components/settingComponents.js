@@ -1,3 +1,5 @@
+import { useEffect } from "react"
+
 const SelectInput = ({setState, state, options, name, label}) => {
   return(
     <div className='form-flex'>
@@ -29,10 +31,12 @@ const NumberInput = ({state, setState, name, label, maxValue}) => {
   )
 }
 const CheckInput = ({state, setState, name, label}) => {
+
+
   return(
     <div className='form-flex check-input'>
       <label htmlFor={name}>{label} </label>
-      <input type="checkbox" onChange={e => setState(e.target.checked)} value={state} />
+      <input id={name} type="checkbox" onChange={e => setState(e.target.checked)} checked={state} />
     </div>
   )
 }

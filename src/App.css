@@ -6,6 +6,9 @@ html, body, #root, .App {
   font-size: 32px;
   overflow: auto;
 }
+button:hover{
+  cursor: pointer;
+}
 nav{
   border-bottom: 2px solid white;
   display: flex;
@@ -128,6 +131,9 @@ nav > .nav-flex{
   background-color: rgba(0, 0, 0, 0.363);
   width: 100vw;
   height: 100vh;
+  max-width: 100vw !important;
+  max-height: 100vh!important;
+  margin: 0 !important;
   position: fixed;
   top: 50%;
   transform: translate(-50%, -50%);

@@ -5,7 +5,7 @@ const LobbyBrowser = () => {
   let [lobbyList, setLobbyList] = useState()
   
   const getLobbies = () => {
-    return fetch("http://localhost:9000/stairs/lobbyList")
+    return fetch("https://book-album.herokuapp.com/lobbyList")
     .then(res => res.json())
     .then(json => setLobbyList(json))
   }

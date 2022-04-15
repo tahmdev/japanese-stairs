@@ -1,7 +1,7 @@
 import MagicInput from './magicInput';
 import { useEffect, useState } from 'react';
 
-let apiUrl = "http://localhost:9000/stairs/"
+let apiUrl = "https://book-album.herokuapp.com/stairs/"
 
 const StairDisplay = ({ socket, stairs, room, roomInfo, team, enemy, userSettings, classic}) => {
   const [length, setLength] = useState([])
@@ -28,26 +28,14 @@ const StairDisplay = ({ socket, stairs, room, roomInfo, team, enemy, userSetting
   // send data to server if word exists
   const handleEnter = (e) => {
     if (e.key === "Enter") {
-      
       let cleanInput = currentInput.replace(/\s/g, "")
-      if (cleanInput){
-        fetch(`${apiUrl}jishoKanji/${cleanInput}/${roomInfo.settings.type}`) 
-        .then(res => res.json())
-        .then(json => {
-          if (json){
-            socket.emit("sendMessage", {word: cleanInput, room: room, team: team})
-          }else{
-            console.log("not a real word")
-          }
-        })
-        setCurrentInput("")
-      }
+      socket.emit("sendMessage", {word: cleanInput, room: room, team: team})
+      setCurrentInput("")
     }
   }
 
   // Check for "enter" input
   useEffect(() => {
-    
     document.addEventListener("keydown", handleEnter)
     return () => {
       document.removeEventListener("keydown", handleEnter)
@@ -71,8 +59,8 @@ const StairDisplay = ({ socket, stairs, room, roomInfo, team, enemy, userSetting
   }
 
   const wordStyle = {
-    color: enemy ? "transparent" : userSettings.color,
-    backgroundColor: userSettings.background,
+    color: enemy ? "transparent" : userSettings ? userSettings.color : "white",
+    backgroundColor: userSettings ? userSettings.background : "black" ,
     pointerEvents: enemy ? "none" : null
   }
   
