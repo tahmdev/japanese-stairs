@@ -1,4 +1,11 @@
-# Getting Started with Create React App
+# About this project
+This was my second big project and it progressed a lot smoother than my previous one. I learned a lot about creating generalized reusable components and how to use websockets. I managed to plan ahead a lot better than before and had a more organized approach but there were still times I had to rewrite code because I didn't think far enough ahead, I will try to improve on this in my next big project by breaking down tasks further.
+
+A website to play Shiritori with other people. Shiritori is a popular Japanese word game where players chain together words starting with the last sylable of the previous word. 
+You can choose between the classic game and two team vs team modes as well as a Kanji mode. 
+
+
+## Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
