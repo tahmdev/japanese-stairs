@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/japanese-stairs/static/css/main.8c32ffed.css",
+    "main.js": "/japanese-stairs/static/js/main.0b8f425a.js",
+    "static/js/787.404c44ca.chunk.js": "/japanese-stairs/static/js/787.404c44ca.chunk.js",
+    "index.html": "/japanese-stairs/index.html",
+    "main.8c32ffed.css.map": "/japanese-stairs/static/css/main.8c32ffed.css.map",
+    "main.0b8f425a.js.map": "/japanese-stairs/static/js/main.0b8f425a.js.map",
+    "787.404c44ca.chunk.js.map": "/japanese-stairs/static/js/787.404c44ca.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.8c32ffed.css",
+    "static/js/main.0b8f425a.js"
+  ]
+}
